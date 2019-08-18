@@ -28,10 +28,18 @@ run insfrastructure bootstrapper
 
 ### Cluster bootstrap
 
+Fork this repository
+https://source.cloud.google.com/devops-trainee/sciensa-kub-bootstrapper
+
+and clone it:
+git clone https://source.cloud.google.com/$PROJECT/sciensa-kub-bootstrapper
+
+cd sciensa-kub-bootstrapper
+
 Install Weave Flux and its Helm Operator by specifying your fork URL:
 
 ```bash
-./scripts/flux-init.sh git@github.com:<YOUR-USERNAME>/gitops-istio
+./scripts/flux-init.sh git clone ssh://$EMAIL@source.developers.google.com:2022/p/$PROJECT/r/sciensa-kub-bootstrapper
 ```
 
 At startup, Flux generates a SSH key and logs the public key. The above command will print the public key. 
