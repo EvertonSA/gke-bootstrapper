@@ -21,7 +21,7 @@ Components:
 
 ### Prerequisites
 
-run insfrastructure bootstrapper
+read and perform insfrastructure bootstrapper file
 ```bash
 01_provision_and_configure_cluster.sh
 ```

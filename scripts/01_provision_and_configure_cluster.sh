@@ -10,9 +10,6 @@ SA_EMAIL="apiadmin@devops-trainee.iam.gserviceaccount.com"
 url_GIT="https://github.com/"
 usr_GIT="evertonsa"
 
-
-
-
 e_VPC="projects/$PROJECT_ID/global/networks/$VPC"
 e_SBN="projects/$PROJECT_ID/regions/$REGION/subnetworks/$SBN"
 
@@ -25,30 +22,29 @@ clusters create $CLUSTER_NAME \
     --no-enable-basic-auth \
     --cluster-version $CLUSTER_VERSION \
     --machine-type "n1-standard-1" \
-    --image-type "COS" \ 
+    --image-type "COS"  \
     --disk-type "pd-standard" \
     --disk-size "100" \
-    --metadata disable-legacy-endpoints=true \ #security best practice
-    --service-account $SA_EMAIL \ #  to be checked best practices for IAM GKE roles
-    --num-nodes "1" \ #1 node per zone = 3 instances
-    --enable-stackdriver-kubernetes \ # can be disabled, but not advisable
-    --enable-ip-alias \ 
+    --metadata disable-legacy-endpoints=true \
+    --service-account $SA_EMAIL \
+    --num-nodes "1" \
+    --enable-stackdriver-kubernetes \
+    --enable-ip-alias \
     --network $e_VPC \
     --subnetwork $e_SBN \
-    --enable-intra-node-visibility \ 
-    --default-max-pods-per-node "110" \ # can be extended but not so simple
+    --enable-intra-node-visibility \
+    --default-max-pods-per-node "110" \
     --addons HorizontalPodAutoscaling,HttpLoadBalancing,Istio --istio-config auth=MTLS_PERMISSIVE \
-    --enable-autoupgrade \ # for critical services, I would disable it
+    --enable-autoupgrade \
     --enable-autorepair \
-    --maintenance-window "06:00" \ # for critical services, I would disable it
-#    --identity-namespace "devops-trainee.svc.id.goog"  disabled due to beta, but duable in the future 
+    --maintenance-window "06:00" 
 
 # add extra preemtible node pool for horizontal autoscaling
 gcloud beta container \
     --project $PROJECT_ID \
 node-pools create "pool-horizontal-autoscaling" \
     --cluster $CLUSTER_NAME \
-    --region $REGION \ # can be --zone specific if traffic is higher in one zone. Probably not applicable for Brazil  
+    --region $REGION \
     --node-version $CLUSTER_VERSION \
     --machine-type "n1-standard-1" \
     --image-type "COS" \
