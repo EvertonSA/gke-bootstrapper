@@ -1,14 +1,14 @@
 apiVersion: flagger.app/v1alpha3
 kind: Canary
 metadata:
-  name: backend
-  namespace: prod
+  name: frontend-001
+  namespace: prd
 spec:
   # deployment reference
   targetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: backend
+    name: frontend-001
   # the maximum time in seconds for the canary deployment
   # to make progress before it is rollback (default 600s)
   progressDeadlineSeconds: 60
@@ -16,7 +16,7 @@ spec:
   autoscalerRef:
     apiVersion: autoscaling/v2beta1
     kind: HorizontalPodAutoscaler
-    name: backend
+    name: frontend-001
   service:
     # container port
     port: 9898
@@ -24,20 +24,27 @@ spec:
       tls:
         # use ISTIO_MUTUAL when mTLS is enabled
         mode: DISABLE
-  # promote the canary without analysing it (default false)
-  skipAnalysis: false
+    # Istio gateways (optional)
+    gateways:
+    - public-gateway.istio-system.svc.cluster.local
+    # Istio virtual service host names (optional)
+    hosts:
+    - "*"
   canaryAnalysis:
     # schedule interval (default 60s)
     interval: 10s
     # max number of failed metric checks before rollback
     threshold: 10
-    # max traffic percentage routed to canary
-    # percentage (0-100)
-    maxWeight: 50
-    # canary increment step
-    # percentage (0-100)
-    stepWeight: 5
-    # Istio Prometheus checks
+    # total number of iterations
+    iterations: 10
+    # canary match condition
+    match:
+      - headers:
+          user-agent:
+            regex: "^(?!.*Chrome)(?=.*\bSafari\b).*$"
+      - headers:
+          cookie:
+            regex: "^(.*?;)?(type=insider)(;.*)?$"
     metrics:
     - name: request-success-rate
       # minimum req success rate (non 5xx responses)
@@ -55,6 +62,4 @@ spec:
         url: http://flagger-loadtester.prod/
         timeout: 5s
         metadata:
-          type: cmd
-          cmd: "hey -z 1m -q 10 -c 2 http://backend-canary.prod:9898/"
-          logCmdOutput: "true"
+          cmd: "hey -z 1m -q 10 -c 2 -H 'Cookie: type=insider' http://frontend-canary.prod:9898/"

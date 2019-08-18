@@ -1,4 +1,4 @@
-# gitops-istio
+# Sciensa ha-k8s-canary bootstrapper 
 
 This guide walks you through setting up Istio on a Kubernetes cluster and 
 automating A/B testing and canary deployments with GitOps pipelines.
@@ -21,29 +21,9 @@ Components:
 
 ### Prerequisites
 
-You'll need a Kubernetes cluster **v1.11** or newer with `LoadBalancer` support, 
-`MutatingAdmissionWebhook` and `ValidatingAdmissionWebhook` admission controllers enabled. 
-For testing purposes you can use Minikube with four CPUs and 4GB of memory. 
-
-Install Flux CLI, Helm and Tiller:
-
+run insfrastructure bootstrapper
 ```bash
-brew install fluxctl kubernetes-helm
-
-kubectl -n kube-system create sa tiller
-
-kubectl create clusterrolebinding tiller-cluster-rule \
---clusterrole=cluster-admin \
---serviceaccount=kube-system:tiller
-
-helm init --service-account tiller --wait
-```
-
-Fork this repository and clone it:
-
-```bash
-git clone https://github.com/<YOUR-USERNAME>/gitops-istio
-cd gitops-istio
+01_provision_and_configure_cluster.sh
 ```
 
 ### Cluster bootstrap

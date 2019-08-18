@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
-  namespace: prod
+  name: frontend-001
+  namespace: prd
   labels:
-    app: frontend
+    app: frontend-001
 spec:
   minReadySeconds: 5
   revisionHistoryLimit: 5
@@ -15,16 +15,16 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: frontend
+      app: frontend-001
   template:
     metadata:
       annotations:
         prometheus.io/scrape: "true"
       labels:
-        app: frontend
+        app: frontend-001
     spec:
       containers:
-      - name: frontend
+      - name: sciensa-react-example
         image: quay.io/stefanprodan/podinfo:1.7.0
         imagePullPolicy: IfNotPresent
         ports:
@@ -37,7 +37,7 @@ spec:
         - --level=info
         env:
         - name: PODINFO_BACKEND_URL
-          value: http://backend:9898/echo
+          value: http://backend-001:9898/echo
         livenessProbe:
           exec:
             command:
