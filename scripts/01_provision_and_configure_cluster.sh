@@ -54,26 +54,23 @@ node-pools create "pool-horizontal-autoscaling" \
     --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
     --preemptible \
     --enable-autoscaling \
+    --num-nodes "1" \
     --min-nodes "0" \
     --max-nodes "2" \
     --enable-autoupgrade \
     --enable-autorepair
 
-## Authenticate to new cluster with:
-# 
+## Authenticate to new cluster
 
 # Install Helm
-
 kubectl -n kube-system create sa tiller
-
 kubectl create clusterrolebinding tiller-cluster-rule \
 --clusterrole=cluster-admin \
 --serviceaccount=kube-system:tiller
-
 helm init --service-account tiller --wait
 
 # clone botstrapper
-git clone https://source.developers.google.com/p/devops-trainee/r/github_evehawas_gitops-istio
+#git clone https://source.developers.google.com/p/devops-trainee/r/github_evehawas_gitops-istio
 # might also work with
 #gcloud source repos clone github_evehawas_gitops-istio --project=$PROJECT_ID
-cd gitops-istio
+#cd gitops-istio
