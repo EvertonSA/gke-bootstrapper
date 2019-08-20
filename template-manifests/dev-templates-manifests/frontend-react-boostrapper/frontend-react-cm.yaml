@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  app_color: blue
+  version: 0.0.1
+kind: ConfigMap
+metadata:
+  name: react-env-configmap
+  namespace: dev

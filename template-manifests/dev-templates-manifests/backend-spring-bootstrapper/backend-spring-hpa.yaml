@@ -1,14 +1,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: frontend-001
-  namespace: prd
+  name: backend-spring
+  namespace: dev
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: frontend-001
-  minReplicas: 2
+    name: backend-spring
+  minReplicas: 1
   maxReplicas: 4
   metrics:
   - type: Resource
