@@ -1,7 +1,0 @@
-# TODO find good way of ignoring namespace
-# apiVersion: v1
-# kind: Namespace
-# metadata:
-#   labels:
-#     istio-injection: enabled
-#   name: ite

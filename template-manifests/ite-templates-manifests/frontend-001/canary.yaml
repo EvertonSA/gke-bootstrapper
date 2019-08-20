@@ -59,7 +59,7 @@ spec:
     # external checks (optional)
     webhooks:
       - name: load-test
-        url: http://flagger-loadtester.prod/
+        url: http://flagger-loadtester.prd/
         timeout: 5s
         metadata:
-          cmd: "hey -z 1m -q 10 -c 2 -H 'Cookie: type=insider' http://frontend-canary.prod:9898/"
+          cmd: "hey -z 1m -q 10 -c 2 -H 'Cookie: type=insider' http://frontend-001-canary.prd:9898/"

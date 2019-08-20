@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-mule4-deployment
+  namespace: prd
+  labels:
+    app: backend-mule4-deployment
+spec:
+  minReadySeconds: 5
+  revisionHistoryLimit: 5
+  progressDeadlineSeconds: 60
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: backend-mule4-deployment
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+      labels:
+        app: backend-mule4-deployment
+    spec:
+      containers:
+      - name: sciensa-mule-example
+        image: gcr.io/sandbox-216902/sciensa-mule4-example:0.0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8081
+          name: http
+          protocol: TCP
+        env:
+        - name: DATABASE_URL
+          value: test
+        # TO BE IMPLEMENTED
+        # livenessProbe:
+        #   exec:
+        #     command:
+        #     - podcli
+        #     - check
+        #     - http
+        #     - localhost:9898/healthz
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 5
+        # readinessProbe:
+        #   exec:
+        #     command:
+        #     - podcli
+        #     - check
+        #     - http
+        #     - localhost:9898/readyz
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
