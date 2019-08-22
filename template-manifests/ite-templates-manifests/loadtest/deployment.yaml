@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: flagger-loadtester
-  namespace: prd
+  namespace: ite
   labels:
     app: flagger-loadtester
 spec:

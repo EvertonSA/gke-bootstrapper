@@ -32,7 +32,7 @@ spec:
         image: evearakaki/reactjs-example:0.0.1
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 8080
+        - containerPort: 80
           name: http
           protocol: TCP
         env:
@@ -46,8 +46,22 @@ spec:
             configMapKeyRef:
               name: react-env-configmap
               key: version
-# livenessProbe not necessary
-# readinessProbe not necessary
+# livenessProbe not necessary, to be checked
+# readinessProbe not necessary, to be checked
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          timeoutSeconds: 1
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          timeoutSeconds: 1
+          periodSeconds: 10
         resources:
           limits:
             cpu: 500m
@@ -56,31 +70,6 @@ spec:
             cpu: 100m
             memory: 64Mi
 
-# bellow uses volumes instead of env variables, but the application uses env, so its useles
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: frontend-react
-#   namespace: prd
-#   labels:
-#     app: frontend-react
-# spec:
-#   minReadySeconds: 5
-#   revisionHistoryLimit: 5
-#   progressDeadlineSeconds: 60
-#   strategy:
-#     rollingUpdate:
-#       maxUnavailable: 0
-#     type: RollingUpdate
-#   selector:
-#     matchLabels:
-#       app: frontend-react
-#   template:
-#     metadata:
-#       annotations:
-#         prometheus.io/scrape: "true"
-#       labels:
-#         app: frontend-react
 #     spec:
 #       volumes:
 #       - name: config-volume
@@ -97,28 +86,3 @@ spec:
 #         volumeMounts:
 #         - name: config-volume
 #           mountPath: /etc/config
-#         livenessProbe:
-#           exec:
-#             command:
-#             - podcli
-#             - check
-#             - http
-#             - localhost:9898/healthz
-#           initialDelaySeconds: 5
-#           timeoutSeconds: 5
-#         readinessProbe:
-#           exec:
-#             command:
-#             - podcli
-#             - check
-#             - http
-#             - localhost:9898/readyz
-#           initialDelaySeconds: 5
-#           timeoutSeconds: 5
-#         resources:
-#           limits:
-#             cpu: 2000m
-#             memory: 512Mi
-#           requests:
-#             cpu: 100m
-#             memory: 64Mi

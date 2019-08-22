@@ -15,9 +15,9 @@ Components:
 
 ### Prerequisites
 
-read and perform insfrastructure bootstrapper file
+read file
 ```bash
-01_provision_and_configure_cluster.sh
+resourses/bundled_cluster.sh
 ```
 
-TO BE COMPLETED
+TO BE DONE

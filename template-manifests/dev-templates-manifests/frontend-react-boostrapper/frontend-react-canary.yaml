@@ -19,7 +19,7 @@ spec:
     name: frontend-react
   service:
     # container port
-    port: 8080
+    port: 80
     trafficPolicy:
       tls:
         # use ISTIO_MUTUAL when mTLS is enabled
@@ -29,7 +29,7 @@ spec:
     - public-gateway.istio-system.svc.cluster.local
     # Istio virtual service host names (optional)
     hosts:
-    - "*"
+    - frontend-react.arakaki.in
   canaryAnalysis:
     # schedule interval (default 60s)
     interval: 10s
@@ -44,7 +44,7 @@ spec:
             regex: "^(?!.*Chrome)(?=.*\bSafari\b).*$"
       - headers:
           cookie:
-            regex: "^(.*?;)?(type=insider)(;.*)?$"
+            regex: "^(.*?;)?(type=cool)(;.*)?$"
     metrics:
     - name: request-success-rate
       # minimum req success rate (non 5xx responses)
@@ -59,7 +59,7 @@ spec:
     # external checks (optional)
     webhooks:
       - name: load-test
-        url: http://flagger-loadtester.prod/
+        url: http://flagger-loadtester.dev/
         timeout: 5s
         metadata:
-          cmd: "hey -z 1m -q 10 -c 2 -H 'Cookie: type=insider' http://frontend-react-canary.prod:8080/"
+          cmd: "hey -z 1m -q 10 -c 2 -H 'Cookie: type=insider' http://frontend-react-canary.dev:80/"

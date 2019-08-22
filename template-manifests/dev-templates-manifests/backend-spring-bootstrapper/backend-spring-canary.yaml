@@ -11,13 +11,21 @@ spec:
     name: backend-spring
   # the maximum time in seconds for the canary deployment
   # to make progress before it is rollback (default 600s)
-  progressDeadlineSeconds: 60
+  progressDeadlineSeconds: 300
   # HPA reference (optional)
   autoscalerRef:
     apiVersion: autoscaling/v2beta1
     kind: HorizontalPodAutoscaler
     name: backend-spring
   service:
+    # uncoment bellow if you want your services to be external
+    # # Istio gateways (optional)
+    # gateways:
+    # - public-gateway.istio-system.svc.cluster.local
+    # - mesh
+    # # Istio virtual service host names (optional)
+    # hosts:
+    # - backend-spring.arakaki.in
     # container port
     port: 8080
     trafficPolicy:
@@ -52,9 +60,9 @@ spec:
     # external checks (optional)
     webhooks:
       - name: load-test
-        url: http://flagger-loadtester.prd/
+        url: http://flagger-loadtester.dev/
         timeout: 5s
         metadata:
           type: cmd
-          cmd: "hey -z 1m -q 10 -c 2 http://backend-spring-canary.prd:8080/"
+          cmd: "hey -z 1m -q 10 -c 2 http://backend-spring-canary.dev:8080/"
           logCmdOutput: "true"

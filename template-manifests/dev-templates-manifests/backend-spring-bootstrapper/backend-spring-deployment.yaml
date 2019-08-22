@@ -43,21 +43,21 @@ spec:
           httpGet:
             path: /health
             port: 8080
-          initialDelaySeconds: 120
+          initialDelaySeconds: 180
           timeoutSeconds: 10
           failureThreshold: 10
         readinessProbe:
           httpGet:
             path: /health
             port: 8080
-          initialDelaySeconds: 130
+          initialDelaySeconds: 120
           timeoutSeconds: 10
           failureThreshold: 10
 # see https://medium.com/faun/java-application-optimization-on-kubernetes-on-the-example-of-a-spring-boot-microservice-cf3737a2219c
         resources:
           limits:
-            cpu: 500m
-            memory: 128Mi
+            cpu: 1000m
+            memory: 512Mi
           requests:
             cpu: 100m
             memory: 64Mi

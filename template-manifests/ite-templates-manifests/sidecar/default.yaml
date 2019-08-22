@@ -2,9 +2,9 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Sidecar
 metadata:
   name: default
-  namespace: prd
+  namespace: ite
 spec:
   egress:
     - hosts:
-        - "prd/*"
+        - "ite/*"
         - "istio-system/*"
