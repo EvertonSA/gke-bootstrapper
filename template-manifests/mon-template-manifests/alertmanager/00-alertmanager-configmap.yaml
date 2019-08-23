@@ -8,7 +8,6 @@ data:
     global:
       resolve_timeout: 5m
       slack_api_url: 'https://hooks.slack.com/services/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'
-
     templates:
     - '/etc/alertmanager-templates/*.tmpl'
     route:
@@ -26,17 +25,12 @@ data:
           team: dev
         receiver: dev
         continue: true
-
     receivers:
     - name: 'default'
-
-# operator specific metrics
     - name: 'devops'
       slack_configs:
       - channel: '#k8-alerts'
         send_resolved: true
-
-# developer specific metrics
     - name: 'dev'
       slack_configs:
       - channel: '#k8-alerts'
