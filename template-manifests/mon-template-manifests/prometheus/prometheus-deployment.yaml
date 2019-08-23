@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: prometheus-deployment
-  namespace: monitoring
+  namespace: mon
 spec:
   replicas: 1
   template:
@@ -10,7 +10,7 @@ spec:
       labels:
         app: prometheus-server
     spec:
-      serviceAccountName: monitoring
+      serviceAccountName: mon
       containers:
         - name: prometheus
           image: prom/prometheus:v2.4.3

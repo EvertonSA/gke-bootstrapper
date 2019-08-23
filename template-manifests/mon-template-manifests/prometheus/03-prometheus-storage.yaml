@@ -2,7 +2,7 @@
 # kind: StorageClass
 # metadata:
 #   name: fast
-#   namespace: monitoring
+#   namespace: mon
 # provisioner: kubernetes.io/gce-pd
 # parameters:
 #   type: pd-ssd
@@ -12,7 +12,7 @@
 # kind: "PersistentVolume"
 # metadata:
 #   name: data-volume-1
-#   namespace: monitoring
+#   namespace: mon
 # spec:
 #   capacity:
 #     storage: 100Gi
@@ -28,7 +28,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: prometheus-claim
-  namespace: monitoring
+  namespace: mon
   annotations:
     volume.beta.kubernetes.io/storage-class: "fast"
 spec:
