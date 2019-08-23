@@ -5,4 +5,4 @@ metadata:
   namespace: dev
 data:
   app_color: blue
-  version: 0.0.2
+  app_version: 0.0.1

@@ -145,6 +145,8 @@ gcloud dns record-sets transaction add --zone=$CLOUDDNS_ZONE \
 --name="*.${DOMAIN}" --ttl=300 --type=A ${GATEWAY_IP}
 gcloud dns record-sets transaction execute --zone $CLOUDDNS_ZONE
 
+# if something goes wrong, use gcloud dns record-sets transaction abort --zone $CLOUDDNS_ZONE to delete the transaction
+
 # create and bind GCP SA to k8s SA
 gcloud iam service-accounts create dns-admin \
 --display-name=dns-admin \

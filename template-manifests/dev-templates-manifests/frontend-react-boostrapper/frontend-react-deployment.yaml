@@ -41,11 +41,11 @@ spec:
             configMapKeyRef:
               name: react-env-configmap
               key: app_color
-        - name: VERSION
+        - name: APP_VERSION
           valueFrom:
             configMapKeyRef:
               name: react-env-configmap
-              key: version
+              key: app_version
 # livenessProbe not necessary, to be checked
 # readinessProbe not necessary, to be checked
         readinessProbe:
