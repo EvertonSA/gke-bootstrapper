@@ -4,5 +4,5 @@ metadata:
   name: react-env-configmap
   namespace: dev
 data:
-  app_color: blue
-  version: 0.0.2
+  APP_COLOR: blue
+  VERSION: 0.0.1

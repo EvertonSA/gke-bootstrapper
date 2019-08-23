@@ -35,17 +35,24 @@ spec:
         - containerPort: 80
           name: http
           protocol: TCP
-        env:
-        - name: APP_COLOR
-          valueFrom:
-            configMapKeyRef:
-              name: react-env-configmap
-              key: app_color
-        - name: VERSION
-          valueFrom:
-            configMapKeyRef:
-              name: react-env-configmap
-              key: version
+        envFrom:
+        - configMapRef:
+            name: react-env-configmap
+        # env:
+        # - name: APP_COLOR
+        #   value: blue
+        # - name: VERSION
+        #   value: 0.0.1
+        # - name: APP_COLOR
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: react-env-configmap
+        #       key: app_color
+        # - name: VERSION
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: react-env-configmap
+        #       key: version
 # livenessProbe not necessary, to be checked
 # readinessProbe not necessary, to be checked
         readinessProbe:
