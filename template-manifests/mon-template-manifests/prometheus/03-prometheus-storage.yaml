@@ -1,28 +1,28 @@
-# apiVersion: storage.k8s.io/v1beta1
-# kind: StorageClass
-# metadata:
-#   name: fast
-#   namespace: mon
-# provisioner: kubernetes.io/gce-pd
-# parameters:
-#   type: pd-ssd
-# allowVolumeExpansion: true
-# ---
-# apiVersion: "v1"
-# kind: "PersistentVolume"
-# metadata:
-#   name: data-volume-1
-#   namespace: mon
-# spec:
-#   capacity:
-#     storage: 100Gi
-#   accessModes:
-#     - ReadWriteOnce
-#   persistentVolumeReclaimPolicy: Retain
-#   storageClassName: fast
-#   gcePersistentDisk:
-#     fsType: ext4
-#     pdName: prometheus-volume
+apiVersion: storage.k8s.io/v1beta1
+kind: StorageClass
+metadata:
+  name: fast
+  namespace: monitoring
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+allowVolumeExpansion: true
+---
+apiVersion: "v1"
+kind: "PersistentVolume"
+metadata:
+  name: data-volume-1
+  namespace: monitoring
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: fast
+  gcePersistentDisk:
+    fsType: ext4
+    pdName: prometheus-volume
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

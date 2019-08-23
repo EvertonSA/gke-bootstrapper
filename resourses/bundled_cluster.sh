@@ -252,6 +252,14 @@ helm upgrade -i flagger-grafana flagger/grafana \
 --set user=admin \
 --set password=admin
 
+
+gcloud beta compute disks create prometheus-volume \
+    --project=devops-trainee \
+    --type=pd-ssd \
+    --size=100GB \
+    --zone=us-central1-a \
+    --physical-block-size=4096
+
 ## grafana virtual service
 # apiVersion: networking.istio.io/v1alpha3
 # kind: VirtualService
