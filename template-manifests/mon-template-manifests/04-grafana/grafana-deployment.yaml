@@ -13,16 +13,16 @@ spec:
     spec:
       containers:
       - name: grafana
-        image: k8s.gcr.io/heapster-grafana-amd64:v5.0.4
+        image: grafana/grafana:6.3.3
         ports:
         - containerPort: 3000
           protocol: TCP
-        volumeMounts:
-        - mountPath: /etc/ssl/certs
-          name: ca-certificates
-          readOnly: true
-        - mountPath: /var
-          name: grafana-storage
+        # volumeMounts:
+        # - mountPath: /etc/ssl/certs
+        #   name: ca-certificates
+        #   readOnly: true
+        # - mountPath: /var
+        #   name: grafana-storage
         env:
         - name: GF_SERVER_HTTP_PORT
           value: "3000"
@@ -38,12 +38,12 @@ spec:
         #   value: Admin
         # - name: GF_SERVER_ROOT_URL
         #   # If you're only using the API Server proxy, set this value instead:
-        #   # value: /api/v1/namespaces/kube-system/services/monitoring-grafana/proxy
+        #   # value: /api/v1/namespaces/kube-system/services/mon-grafana/proxy
         #   value: /
-      volumes:
-      - name: ca-certificates
-        hostPath:
-          path: /etc/ssl/certs
-      - name: grafana-storage
-        emptyDir: {}
+    #   volumes:
+    #   - name: ca-certificates
+    #     hostPath:
+    #       path: /etc/ssl/certs
+    #   - name: grafana-storage
+    #     emptyDir: {}
 ---
