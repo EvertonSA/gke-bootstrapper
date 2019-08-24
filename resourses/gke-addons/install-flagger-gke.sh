@@ -1,3 +1,12 @@
+###################################################################
+#Script Name	: install-flagger-gke.sh                                                                                  
+#Description	: install flagger and configure it to manage istio gateway 
+#                 and also install prometheus and grafana for canary analisys                                                                                  
+#Args          	: no args needed, but env variables are a must 
+#Author       	: Everton Seiei Arakaki                                                
+#Email         	: eveuca@gmail.com                                           
+###################################################################
+
 #install flagger istio gateway
 REPO=https://raw.githubusercontent.com/weaveworks/flagger/master
 kubectl apply -f ${REPO}/artifacts/gke/istio-gateway.yaml

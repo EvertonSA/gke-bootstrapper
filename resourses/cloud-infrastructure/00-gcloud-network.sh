@@ -1,3 +1,11 @@
+###################################################################
+#Script Name	: 00-gcloud-network.sh                                                                                  
+#Description	: Provision VPC and subnets under GCP                                                                                  
+#Args          	: no args needed, but env variables are a must 
+#Author       	: Everton Seiei Arakaki                                                
+#Email         	: eveuca@gmail.com                                           
+###################################################################
+
 # create VPC
 gcloud compute 
     --project=$PROJECT_ID \

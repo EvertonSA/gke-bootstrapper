@@ -1,3 +1,11 @@
+###################################################################
+#Script Name	: 20-gcloud-clouddns.sh                                                                                  
+#Description	: Provision and configure CloudDNS specific resources                                                                                  
+#Args          	: no args needed, but env variables are a must 
+#Author       	: Everton Seiei Arakaki                                                
+#Email         	: eveuca@gmail.com                                           
+###################################################################
+
 # create a DNS zone under cloud DNS named istio
 gcloud dns managed-zones create \
 --dns-name=$DOMAIN \

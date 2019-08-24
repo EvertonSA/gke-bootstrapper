@@ -1,3 +1,11 @@
+###################################################################
+#Script Name	: 10-gcloud-gke.sh                                                                                  
+#Description	: Provision GKE cluster with default node pool + autoscaling pool                                                                               
+#Args          	: no args needed, but env variables are a must 
+#Author       	: Everton Seiei Arakaki                                                
+#Email         	: eveuca@gmail.com                                           
+###################################################################
+
 # create GKE production ready cluster
 gcloud beta container \
     --project $PROJECT_ID \
