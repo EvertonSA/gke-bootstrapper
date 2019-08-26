@@ -8,16 +8,16 @@
 ###################################################################
 
 #### gcp_specific
-PROJECT_ID="devops-trainee"
-CLUSTER_NAME="devops-k8s-gitops-001"
+PROJECT_ID="sandbox-251021"
+CLUSTER_NAME="sciensa-kub-cluster-001"
 # OPTIONS = {"lowest_price":["us-central1", "us-west1", "us-east1"], "lowest_latency":["southamerica-east1"]}
 REGION="us-central1" 
 CLUSTER_VERSION="1.13.7-gke.19"
-VPC="devops-trainee-vpc-001"
-KUB_SBN="devops-trainee-subnet-kub"
-VM_SBN="devops-trainee-subnet-vm"
-OWNER_EMAIL="eveuca@gmail.com"
-SA_EMAIL="apiadmin@devops-trainee.iam.gserviceaccount.com"
+VPC="sciensa-vpc-001"
+KUB_SBN="sciensa-subnet-kub"
+VM_SBN="sciensa-subnet-vm"
+OWNER_EMAIL="everton.arakaki@soaexpert.com.br"
+SA_EMAIL="apiadmin@sandbox-251021.iam.gserviceaccount.com"
 DOMAIN="arakaki.in"
 CLOUDDNS_ZONE="istio"
 
@@ -35,6 +35,7 @@ SLACK_USER="flagger"
 #variable_completion
 e_VPC="projects/$PROJECT_ID/global/networks/$VPC"
 e_SBN="projects/$PROJECT_ID/regions/$REGION/subnetworks/$KUB_SBN"
+e_SBN_VM="projects/$PROJECT_ID/regions/$REGION/subnetworks/$VM_SBN"
 
 #ip range for subnets
 KUB_SBN_IP_RANGE="10.32.0.0/16"

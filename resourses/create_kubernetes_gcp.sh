@@ -9,17 +9,17 @@
 # import variables in script context
 source values.sh
 
-# provision network stuff
-#. cloud-infrastructure/00-gcloud-network.sh
+echo "Provision network stuff"
+. cloud-infrastructure/00-gcloud-network.sh
 
-# create service account
+#echo "Create service account"
 #. cloud-infrastructure/01-gcloud-apiadmin-sa.sh
 
-# create GKE cluster
-#. cloud-infrastructure/10-gcloud-gke.sh
+# echo "Create GKE cluster"
+# . cloud-infrastructure/10-gcloud-gke.sh
 
-# # create storage for elastic and prometheus 
-# . cloud-infrastructure/11-gcloud-prom-storage.sh
+# create storage for elastic and prometheus 
+#. cloud-infrastructure/11-gcloud-prom-storage.sh
 #. cloud-infrastructure/12-gcloud-elastic-storage.sh
 
 # # create dns entry
