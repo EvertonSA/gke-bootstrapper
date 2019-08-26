@@ -7,35 +7,36 @@
 ###################################################################
 
 # create GKE production ready cluster
+# disable basic-auth is best practice!
+# disable legacy-endpoints is best practice!
+# stackdriver is disabled, to enable, uncomment bellow 
+#    --enable-stackdriver-kubernetes \
+# When enabled, a Pod sends a packet to another Pod on the same node, the packet leaves the node and is processed by the GCP network.
+# istio is the google choice for service mesh
+# auto-upgrade will only happen at 3am
+
 gcloud beta container \
     --project $PROJECT_ID \
 clusters create $CLUSTER_NAME \
     --region $REGION \
-# disable basic-auth is best practice!
     --no-enable-basic-auth \
     --cluster-version $CLUSTER_VERSION \
     --machine-type "n1-standard-1" \
     --image-type "COS"  \
     --disk-type "pd-standard" \
     --disk-size "30" \
-# disable legacy-endpoints is best practice!
     --metadata disable-legacy-endpoints=true \
     --service-account $SA_EMAIL \
     --num-nodes "1" \
-# stackdriver is disabled, to enable, uncomment bellow 
-#    --enable-stackdriver-kubernetes \
     --enable-ip-alias \
     --network $e_VPC \
     --subnetwork $e_SBN \
-# When enabled, a Pod sends a packet to another Pod on the same node, the packet leaves the node and is processed by the GCP network.
     --enable-intra-node-visibility \
     --default-max-pods-per-node "110" \
-# istio is the google choice for service mesh
     --addons HorizontalPodAutoscaling,HttpLoadBalancing,Istio \
     --istio-config=auth=MTLS_PERMISSIVE \
     --enable-autoupgrade \
     --enable-autorepair \
-# auto-upgrade will only happen at 3am
     --maintenance-window "03:00" 
 
 # add extra preemtible node pool for horizontal autoscaling

@@ -1,14 +1,14 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: backend-test
-  namespace: dev
+  name: grafana
+  namespace: mon
 spec:
   hosts:
-  - "backend-spring.arakaki.in"
+  - "grafana-mon.arakaki.in"
   gateways:
   - public-gateway.istio-system.svc.cluster.local
   http:
   - route:
     - destination:
-        host: backend-spring
+        host: grafana

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "devops-trainee",
+  "private_key_id": "c9b7cb45a9a5f11775864c85382e5586a788049f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCpwz7pMWNIx8wE\nL4wuFKVbMWXea0KlXZlLetT6JrRKeiG1eAMLxB01sv6teG1aXlT3bHXH3A8Kc4To\nbCz4lwK2kn2sBDtH9Nkzmcg5FoSAJ04YolIVvQf9K/b+wakp7x/iJzSiw4axmowh\nZOTrbGpmaJFsaTuAKnGxq1GtUh3L/qx5ib5eN604KJh/b/XqkJdWRObC482uzYDM\n/aoNFyfoyWqYCWzfm978oKK3QDhw/Gg3DUMOm+6HMitmsgke7RO4sK97H7eOROHI\nj+vurOWT1L3lu3fVH6p48dlHuor6hLBZx6Yrk9DpC3dlmYA83gC/uGn1fYzNNNhf\ngQDamqRRAgMBAAECggEAHP7b/TUCDgGQO2vKn+lHWATfLyb3XmrW/tEnVOWs+CaV\noNrzfDw+N/iPbt4poVyI2yzjjiQsTn7uJcuqP7h9TmVFgU7EuFTeD2X2EKgjsAbm\nnCcHaa6ckXXDrX4y8FZnRfen0iAe3rF0u1RyFDLzlnPIWPG9Z7X4Lt5B6F5k9/1L\nlgna/sIFe6LTu3NpHizXRNE7k0rRhEugG8DCI5KFj47ZxxB95iwCARt/HGomQ7XJ\nSuUwftTWeG1ot03mlqaIWDtS2GE/t6s0m/vAy39VQtLdzj2YI91YbYDA+3Gxrv7q\nSGCjdUuKkKPzFuP/o2cVmr0V0q72iga38ypkqlXYhQKBgQDhcXgqURvRJdvUAMZV\n9Rx9t5NcPfAhCHgR+HqS46Tn8C681C+cdV7dBTWLANZS6wT8HI0x1dzTQA3GQJ2Z\nsJrAF5S5OIAeEjk7MXBNXrsNuEhxs+nLf6P+WwnE63uRg7r7i8nWltfbBSWLlaFu\nKXIdQzO1Za5VRwfPBPhU6Kxr3QKBgQDAxb9NliC1Ug9OxXP/wkWIUuKt9h7LVTSH\n8yTFkOIZC3IAsALAiKhMPVTkc6IftSJvTo7sfIUClXIdfhGxfsYSRcTJLFz3Qj5b\nv/1NbPHyJ4fHIpKkBwFea3c3hiU1ZtV6V60A+c1T4xjr5twbE9KBdt18IT0EFBnE\n6ZJSJw6dBQKBgCEF/hQ0zV5VrV3gvyzYOtQvj+ZzLDmqg+wd+daKgh13kWEXs+G3\nT64QlUdHWB3NT22ewRALw80uFNZ1oKBivkhlK+P14s6E3N1O4KR0u/HGjNYbBKRK\njjs0Gro9xFwMb9dpIqfMcNIkbtuDj6ITcCPZNDneKytSvFIW6EmHy7oBAoGAH//z\nfK6iKVdA4UOXuOoH3tRbeqMzg29WdAbhoMYnMh8bQo/1NP66aUV5FR8412ibGb0B\nrrIQ5lfmhIzL5Rn1SU05mGd72zOs5FAffT3Lf/Yd7OmJTB85k/Hk7VugS5gRceih\n+Fp/QiCdn3NIMFp/BCy2IYfm+AlaKbzYJDkFjP0CgYAoc8edtAWLwUJx/04ch22W\n+2DVqCvPC0uXtiaD8ywchWnxxgMB6JazopYmH3xoyaJ0XsRiDvQ4Kr06bVvshIzh\nI5cOrl3XijPhGhLy5g6QkBl7ltXb4fPXHIxhOVu4NxAhB6vaPiicgMVL1I2nL0t2\nGx5aGx7DvJKQec2+wVWXjA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "dns-admin@devops-trainee.iam.gserviceaccount.com",
+  "client_id": "114396847847101181535",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dns-admin%40devops-trainee.iam.gserviceaccount.com"
+}
