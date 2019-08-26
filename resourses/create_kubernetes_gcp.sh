@@ -18,12 +18,13 @@ source values.sh
 # create GKE cluster
 #. cloud-infrastructure/10-gcloud-gke.sh
 
-# # create storage 
+# # create storage for elastic and prometheus 
 # . cloud-infrastructure/11-gcloud-prom-storage.sh
+#. cloud-infrastructure/12-gcloud-elastic-storage.sh
 
 # # create dns entry
 #. cloud-infrastructure/20-gcloud-clouddns.sh
-cd mo   
+
 # create dns service account
 #. cloud-infrastructure/30-gcloud-dns-sa.sh
 
