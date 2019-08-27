@@ -11,7 +11,6 @@ source values.sh
 
 # começar dos discos
 
-
 # echo "deleting pool-horizontal-autoscaling"
 # gcloud container node-pools delete "pool-horizontal-autoscaling" 
 #     --cluster=$CLUSTER_NAME \
