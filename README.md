@@ -2,4 +2,4 @@
 
 TO BE DONE
 
-prometheus backend: 
+prometheus backend:  http://prometheus-service:8080
