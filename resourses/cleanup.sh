@@ -9,8 +9,11 @@
 # import variables in script context
 source values.sh
 
+# começar dos discos
+
+
 # echo "deleting pool-horizontal-autoscaling"
-# gcloud container node-pools delete "pool-horizontal-autoscaling" \
+# gcloud container node-pools delete "pool-horizontal-autoscaling" 
 #     --cluster=$CLUSTER_NAME \
 #     --region=$REGION
 
@@ -21,12 +24,12 @@ source values.sh
 # echo "delete apiadmin service account"
 # gcloud iam service-accounts delete $SA_EMAIL
 
-echo "delete kub subnet"
-gcloud compute networks subnets delete $e_SBN
+# echo "delete kub subnet"
+# gcloud compute networks subnets delete $e_SBN
 
-echo "delete vm subnet"
-gcloud compute networks subnets delete $e_SBN_VM
+# echo "delete vm subnet"
+# gcloud compute networks subnets delete $e_SBN_VM
 
-echo "delete vpc"
-gcloud compute networks delete $e_VPC
+# echo "delete vpc"
+# gcloud compute networks delete $e_VPC
 

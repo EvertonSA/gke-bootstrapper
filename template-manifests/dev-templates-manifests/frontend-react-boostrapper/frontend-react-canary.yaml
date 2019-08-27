@@ -29,7 +29,7 @@ spec:
     - public-gateway.istio-system.svc.cluster.local
     # Istio virtual service host names (optional)
     hosts:
-    - frontend-react.arakaki.in
+    - frontend-react.evertonarakaki.tk
   canaryAnalysis:
     # schedule interval (default 60s)
     interval: 10s

@@ -6,7 +6,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: eveuca@gmail.com
+    email: everton.arakaki@soaexpert.com.br
     privateKeySecretRef:
       name: letsencrypt-prod
     dns01:
@@ -16,4 +16,4 @@ spec:
           serviceAccountSecretRef:
             name: cert-manager-credentials
             key: gcp-dns-admin.json
-          project: devops-trainee
+          project: sandbox-251021

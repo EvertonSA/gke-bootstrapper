@@ -5,7 +5,7 @@ metadata:
   namespace: mon
 spec:
   hosts:
-  - "grafana-mon.arakaki.in"
+  - "grafana-mon.evertonarakaki.tk"
   gateways:
   - public-gateway.istio-system.svc.cluster.local
   http:

@@ -18,8 +18,16 @@ KUB_SBN="sciensa-subnet-kub"
 VM_SBN="sciensa-subnet-vm"
 OWNER_EMAIL="everton.arakaki@soaexpert.com.br"
 SA_EMAIL="apiadmin@sandbox-251021.iam.gserviceaccount.com"
-DOMAIN="arakaki.in"
+DOMAIN="evertonarakaki.tk"
 CLOUDDNS_ZONE="istio"
+
+# DNS settings:
+CERTMANAGER_DNS='--dns01-recursive-nameservers "80.80.80.80:53,80.80.81.81:53"'
+
+#TODO, find a way to pass as intreger..
+PROMETHEUS_SSD_SIZE="50" # In GB. Free account only have 100 max ssd per region
+ELASTICSEARCH_SSD_SIZE="50" # In GB. Free account only have 100 max ssd per region
+
 
 #### github
 url_GIT="https://github.com/"
