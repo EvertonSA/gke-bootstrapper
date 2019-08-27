@@ -10,6 +10,6 @@
 gcloud beta compute disks create elastic-volume \
     --project=$PROJECT_ID \
     --type=pd-ssd \
-    --size=100GB \
-    --zone=$REGION-a \
+    --size=50GB \
+    --zone=$REGION-b \
     --physical-block-size=4096

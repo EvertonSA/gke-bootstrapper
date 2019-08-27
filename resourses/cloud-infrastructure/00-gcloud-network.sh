@@ -7,7 +7,7 @@
 ###################################################################
 
 # create VPC
-gcloud compute 
+gcloud compute \
     --project=$PROJECT_ID \
     networks create $VPC \
     --subnet-mode=custom
@@ -15,7 +15,7 @@ gcloud compute
 # create VM subnet 
 gcloud compute \
     --project=$PROJECT_ID \
-subnets create $VM_SBN \
+networks subnets create $VM_SBN \
     --network=$VPC \
     --region=$REGION \
     --range=$VM_SBN_IP_RANGE
@@ -23,7 +23,7 @@ subnets create $VM_SBN \
 # create k8s subnet 
 gcloud compute \
     --project=$PROJECT_ID \
-subnets create $KUB_SBN \
+networks subnets create $KUB_SBN \
     --network=$VPC \
     --region=$REGION \
     --range=$KUB_SBN_IP_RANGE
