@@ -21,7 +21,7 @@ clusters create $CLUSTER_NAME \
     --region $REGION \
     --no-enable-basic-auth \
     --cluster-version $CLUSTER_VERSION \
-    --machine-type "n1-standard-1" \
+    --machine-type "n1-standard-2" \
     --image-type "COS"  \
     --disk-type "pd-standard" \
     --disk-size "30" \
@@ -46,7 +46,7 @@ node-pools create "pool-horizontal-autoscaling" \
     --cluster $CLUSTER_NAME \
     --region $REGION \
     --node-version $CLUSTER_VERSION \
-    --machine-type "n1-standard-4" \
+    --machine-type "n1-highcpu-4" \
     --image-type "COS" \
     --disk-type "pd-standard" \
     --disk-size "100" \

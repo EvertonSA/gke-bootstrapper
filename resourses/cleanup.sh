@@ -21,14 +21,14 @@ source values.sh
 #     --region=$REGION
 
 # echo "delete apiadmin service account"
-# gcloud iam service-accounts delete $SA_EMAIL
+#gcloud iam service-accounts delete $SA_EMAIL
 
 # echo "delete kub subnet"
-# gcloud compute networks subnets delete $e_SBN
+#gcloud compute networks subnets delete $e_SBN
 
 # echo "delete vm subnet"
-# gcloud compute networks subnets delete $e_SBN_VM
+#gcloud compute networks subnets delete $e_SBN_VM
 
 # echo "delete vpc"
-# gcloud compute networks delete $e_VPC
+#gcloud compute networks delete $e_VPC
 

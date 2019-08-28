@@ -17,4 +17,4 @@ helm repo add jetstack https://charts.jetstack.io
 helm install --name cert-manager --namespace cert-manager jetstack/cert-manager
 
 #only if dottk
-#kubectl patch deployment cert-manager -n cert-manager -p '{"spec":{"template":{"spec":{"containers":[{"name":"cert-manager","args":["--v=2","--cluster-resource-namespace=$(POD_NAMESPACE)","--leader-election-namespace=$(POD_NAMESPACE)","--dns01-recursive-nameservers=80.80.80.80:53","--dns01-recursive-nameservers=80.80.81.81:53"]}]}}}}'
+kubectl patch deployment cert-manager -n cert-manager -p '{"spec":{"template":{"spec":{"containers":[{"name":"cert-manager","args":["--v=2","--cluster-resource-namespace=$(POD_NAMESPACE)","--leader-election-namespace=$(POD_NAMESPACE)","--dns01-recursive-nameservers=80.80.80.80:53","--dns01-recursive-nameservers=80.80.81.81:53"]}]}}}}'

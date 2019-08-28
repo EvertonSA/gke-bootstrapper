@@ -10,7 +10,6 @@
 #### gcp_specific
 PROJECT_ID="sandbox-251021"
 CLUSTER_NAME="sciensa-kub-cluster-001"
-# OPTIONS = {"lowest_price":["us-central1", "us-west1", "us-east1"], "lowest_latency":["southamerica-east1"]}
 REGION="us-central1" 
 CLUSTER_VERSION="1.13.7-gke.19"
 VPC="sciensa-vpc-001"
@@ -22,16 +21,11 @@ DOMAIN="evertonarakaki.tk"
 CLOUDDNS_ZONE="istio"
 
 # DNS settings:
-CERTMANAGER_DNS='--dns01-recursive-nameservers "80.80.80.80:53,80.80.81.81:53"'
+#CERTMANAGER_DNS='--dns01-recursive-nameservers "80.80.80.80:53,80.80.81.81:53"'
 
 #TODO, find a way to pass as intreger..
 PROMETHEUS_SSD_SIZE="50" # In GB. Free account only have 100 max ssd per region
 ELASTICSEARCH_SSD_SIZE="50" # In GB. Free account only have 100 max ssd per region
-
-
-#### github
-url_GIT="https://github.com/"
-usr_GIT="evertonsa"
 
 #### slack specific
 SLACK_URL_WEBHOOK="https://hooks.slack.com/services/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"

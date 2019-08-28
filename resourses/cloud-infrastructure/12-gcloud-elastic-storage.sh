@@ -7,7 +7,7 @@
 #Email         	: eveuca@gmail.com                                           
 ###################################################################
 
-gcloud beta compute disks create elastic-volume \
+gcloud beta compute disks create elasticsearch-volume \
     --project=$PROJECT_ID \
     --type=pd-ssd \
     --size=50GB \

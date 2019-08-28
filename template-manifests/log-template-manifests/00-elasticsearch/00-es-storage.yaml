@@ -11,11 +11,11 @@ allowVolumeExpansion: true
 apiVersion: "v1"
 kind: "PersistentVolume"
 metadata:
-  name: data-volume-1
+  name: data-volume-elastic
   namespace: log
 spec:
   capacity:
-    storage: 100Gi
+    storage: 50Gi
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
@@ -37,4 +37,4 @@ spec:
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 100Gi
+      storage: 50Gi
