@@ -11,6 +11,8 @@ gcloud dns managed-zones create \
 --dns-name=$DOMAIN \
 --description="Istio zone" "istio"
 
+sleep 60s
+
 # get istio ingress gateway
 export GATEWAY_IP=$(kubectl -n istio-system get svc/istio-ingressgateway -ojson \
 | jq -r .status.loadBalancer.ingress[0].ip)

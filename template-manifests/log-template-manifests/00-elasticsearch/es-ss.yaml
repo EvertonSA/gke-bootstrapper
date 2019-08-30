@@ -9,7 +9,7 @@ spec:
   serviceName: elasticsearch
   # NOTE: This is number of nodes that we want to run
   # you may update this
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       service: elasticsearch
@@ -18,20 +18,6 @@ spec:
       labels:
         service: elasticsearch
     spec:
-    #   tolerations:
-    #   - key: "app"
-    #     operator: "Equal"
-    #     value: "frontend"
-    #     effect: "NoSchedule"
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: beta.kubernetes.io/instance-type
-                operator: In
-                values:
-                - n1-standard-4
       terminationGracePeriodSeconds: 300
       # init containers for production ready setup
       initContainers:
@@ -84,11 +70,22 @@ spec:
                 fieldPath: metadata.name
           # NOTE: This will tell the elasticsearch node where to connect to other nodes to form a cluster
           - name: discovery.zen.ping.unicast.hosts
-            value: "elasticsearch-0.elasticsearch.log.svc.cluster.local"
-            #value: "elasticsearch-0.elasticsearch.log.svc.cluster.local,elasticsearch-1.elasticsearch.log.svc.cluster.local,elasticsearch-2.elasticsearch.log.svc.cluster.local"
+            #value: "elasticsearch-0.elasticsearch.log.svc.cluster.local"
+            value: "elasticsearch-0.elasticsearch.log.svc.cluster.local,elasticsearch-1.elasticsearch.log.svc.cluster.local,elasticsearch-2.elasticsearch.log.svc.cluster.local"
           # NOTE: You can increase the heap size
           - name: ES_JAVA_OPTS
             value: -Xms512m -Xmx512m
         volumeMounts:
         - name: elasticsearch-storage-volume
           mountPath: /usr/share/elasticsearch/data
+  volumeClaimTemplates:
+  - metadata:
+      name: elasticsearch-storage-volume
+      labels:
+        app: elasticsearch
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: fast
+      resources:
+        requests:
+          storage: 10Gi

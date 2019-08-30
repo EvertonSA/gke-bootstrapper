@@ -9,6 +9,8 @@
 # import variables in script context
 source values.sh
 
+gcloud config set project $PROJECT_ID
+
 #echo "Provision network stuff"
 . cloud-infrastructure/00-gcloud-network.sh
 
@@ -20,10 +22,10 @@ source values.sh
 
 # create storage for prometheus 
 # for free accounts, limit is 50GB per region. ideal 250 each ...
-. cloud-infrastructure/11-gcloud-prom-storage.sh
+#. cloud-infrastructure/11-gcloud-prom-storage.sh
 
 # elastic is provisioned using helm, do not apply bellow line
-. cloud-infrastructure/12-gcloud-elastic-storage.sh
+#. cloud-infrastructure/12-gcloud-elastic-storage.sh
 
 # # create dns entry
 . cloud-infrastructure/20-gcloud-clouddns.sh
@@ -44,11 +46,9 @@ kubectl create clusterrolebinding "cluster-admin-$(whoami)" \
 
 # TODO install issuer and certificate
 
+# sleep 30s
 kubectl apply -f cert-manager-manifests/00-letsencrypt-prod-issuer.yaml
 #kubectl apply -f cert-manager-manifests/10-istio-gateway-cert.yaml
-
-# # bellow is necessary to renew istio gateway pod certificate
-#kubectl -n istio-system delete pods -l istio=ingressgateway
 
 # # install flagger 
 . gke-addons/install-flagger-gke.sh

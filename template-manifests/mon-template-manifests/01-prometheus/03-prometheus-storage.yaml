@@ -7,22 +7,22 @@ provisioner: kubernetes.io/gce-pd
 parameters:
   type: pd-ssd
 allowVolumeExpansion: true
----
-apiVersion: "v1"
-kind: "PersistentVolume"
-metadata:
-  name: data-volume-prom
-  namespace: mon
-spec:
-  capacity:
-    storage: 50Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: fast
-  gcePersistentDisk:
-    fsType: ext4
-    pdName: prometheus-volume
+# ---
+# apiVersion: "v1"
+# kind: "PersistentVolume"
+# metadata:
+#   name: data-volume-prom
+#   namespace: mon
+# spec:
+#   capacity:
+#     storage: 50Gi
+#   accessModes:
+#     - ReadWriteOnce
+#   persistentVolumeReclaimPolicy: Retain
+#   storageClassName: fast
+#   gcePersistentDisk:
+#     fsType: ext4
+#     pdName: prometheus-volume
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
