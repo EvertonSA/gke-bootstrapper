@@ -19,6 +19,9 @@ OWNER_EMAIL="everton.arakaki@soaexpert.com.br"
 SA_EMAIL="apiadmin@sandbox-251021.iam.gserviceaccount.com"
 DOMAIN="evertonarakaki.tk"
 CLOUDDNS_ZONE="istio"
+ZONE_POSFIX_1="c"
+ZONE_POSFIX_2="f"
+
 
 # DNS settings:
 #CERTMANAGER_DNS='--dns01-recursive-nameservers "80.80.80.80:53,80.80.81.81:53"'

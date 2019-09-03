@@ -81,7 +81,6 @@ kubectl -n cert-manager get pods
 kubectl -n certmanager logs -f <cert-manager-xxxxxx-xxxxxxx>
 ```
 
-
 ### Create Kubernetes Namespaces
 ```
 cd ../
@@ -100,6 +99,7 @@ namespace/prd created
 Edit file `sciensa-kub-bootstrapper/template-manifests/mon-template-manifests/00-alertmanager/00-alertmanager-configmap.yaml` with desired Slack configurations. TODO: automatic paramater injection using values.sh
 
 ```
+kubectl apply -f template-manifests/mon-template-manifests/istio-sidecar
 kubectl apply -f template-manifests/mon-template-manifests/00-alertmanager
 kubectl apply -f template-manifests/mon-template-manifests/01-prometheus
 kubectl apply -f template-manifests/mon-template-manifests/02-kube-state-metrics
@@ -126,18 +126,29 @@ Under Grafana dashboard, click the `+` sign and select `Import` option. There is
 
 ### Create Logging Objects
 ```
+kubectl apply -f template-manifests/log-template-manifests/istio-sidecar
 kubectl apply -f template-manifests/log-template-manifests/00-elasticsearch
 kubectl apply -f template-manifests/log-template-manifests/10-fluentd
 kubectl apply -f template-manifests/log-template-manifests/20-kibana
 ```
-file:///home/everton_arakaki/sciensa/sciensa-kub-bootstrapper/template-manifests/log-template-manifests
-............
 
-TO BE DONE
+### Create CI/CD (CID) Objects
+```
 
-prometheus backend:  http://prometheus-service:8080
+```
 
-lembrar de falar de disco, tamanho de disco preço de disco
+for harbor, only!!! this is beta, TODO: add persistent storage 
+links: https://ruzickap.github.io/k8s-knative-gitlab-harbor/part-04/
+```
+export CLUSTER_NAME="sciensa-kub-cluster-001"
+export DOMAIN="evertonarakaki.tk"
+template-manifests/cid-template-manifests/00-harbor/install-harbor-container-registry.sh
+```
+
+export DOMAIN="evertonarakaki.tk"
+export CLUSTER_NAME="sciensa-kub-cluster-001"
+
+
 
 
 ## Operators manual
@@ -147,18 +158,32 @@ Shutdown cluster:
 gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=default-pool
 gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=pool-horizontal-autoscaling
 ```
+
 Turn on cluster:
 ```
 gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=1 --region=us-central1 --node-pool=default-pool
 gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=1 --region=us-central1 --node-pool=pool-horizontal-autoscaling
 ```
+
 Interesting alias:
 ```
 alias klog="kubectl -n log"
 alias kmon="kubectl -n mon"
+alias kcid="kubectl -n cid"
 alias kdev="kubectl -n dev"
 alias kite="kubectl -n ite"
 alias kprd="kubectl -n prd"
 ```
 
+Force Deployment/Statefulset update without deleting
+```
+kmon patch deployments prometheus-deployment -p  "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"dummy-date\":\"`date +'%s'`\"}}}}}"
+```
+
+Reset Grafana admin password to admin:
+```
+kmon get pods
+kmon exec -it <grafana-pod> -c grafana -- /bin/bash
+grafana-cli admin reset-admin-password admin
+```
 

@@ -38,6 +38,7 @@ clusters create $CLUSTER_NAME \
     --enable-autoupgrade \
     --enable-autorepair \
     --maintenance-window "03:00" 
+    --node-locations=$REGION-$ZONE_POSFIX_1,$REGION-$ZONE_POSFIX_2
 
 # add extra preemtible node pool for horizontal autoscaling
 gcloud beta container \
@@ -59,3 +60,4 @@ node-pools create "pool-horizontal-autoscaling" \
     --max-nodes "2" \
     --enable-autoupgrade \
     --enable-autorepair
+    --node-locations=$REGION-$ZONE_POSFIX_1,$REGION-$ZONE_POSFIX_2
