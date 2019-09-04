@@ -18,7 +18,6 @@
 gcloud beta container \
     --project $PROJECT_ID \
 clusters create $CLUSTER_NAME \
-    --region $REGION \
     --zone=$REGION-$ZONE_POSFIX_1 \
     --node-locations=$REGION-$ZONE_POSFIX_1,$REGION-$ZONE_POSFIX_2 \
     --no-enable-basic-auth \
@@ -47,7 +46,6 @@ gcloud beta container \
     --project $PROJECT_ID \
 node-pools create "pool-horizontal-autoscaling" \
     --cluster $CLUSTER_NAME \
-    --region $REGION \
     --zone=$REGION-$ZONE_POSFIX_1 \
     --node-locations=$REGION-$ZONE_POSFIX_1,$REGION-$ZONE_POSFIX_2 \
     --node-version $CLUSTER_VERSION \
