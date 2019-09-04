@@ -8,7 +8,7 @@ helm install --name cid --namespace cid \
   --set postgresql.enabled=false \
   --set postgresql.postgresServer=database-psql-cid-postgresql.cid.svc.cluster.local \
   --set postgresql.postgresUser=postgres \
-  --set postgresql.postgresDatabase=sonarDB \
+  --set postgresql.postgresDatabase=sonardb \
   --set postgresql.service.port=5432 \
   --set postgresql.postgresPassword=${POSTGRES_PASSWORD} \
   stable/sonarqube
