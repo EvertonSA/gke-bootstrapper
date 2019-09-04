@@ -116,10 +116,10 @@ helm install --name harbor --namespace cid \
     --set externalURL=https://harbor.${DOMAIN} \
     --set harborAdminPassword=admin \
     --set database.type=external \
-    --set database.external.host=database-container-registry-postgresql.cid.svc.cluster.local \
+    --set database.external.host=database-psql-cid-postgresql.cid.svc.cluster.local \
     --set database.external.username=postgres\
     --set database.external.password=$POSTGRES_PASSWORD \
     --set redis.type=external \
-    --set redis.external.host=cache-container-registry-redis-master.cid.svc.cluster.local \
+    --set redis.external.host=cache-cid-redis-master.cid.svc.cluster.local \
     --set redis.external.password=$REDIS_PASSWORD \
     harbor/harbor
