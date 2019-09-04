@@ -3,6 +3,7 @@ export POSTGRES_PASSWORD=$(kubectl get secret --namespace cid database-psql-cid-
 
 helm install --name sonarqube --namespace cid \
   --set service.type=clusterIP \
+  --database.type=postgresql \
   --postgresql.enabled=false \
   --postgresql.postgresServer=database-psql-cid-postgresql.cid.svc.cluster.local \
   --postgresql.postgresUser=postgres \
