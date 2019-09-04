@@ -87,11 +87,8 @@ spec:
         app: elasticsearch
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: fst-${REGION}-${ZONE_POSFIX_1}-${ZONE_POSFIX_2}
+      storageClassName: std-${REGION}-${ZONE_POSFIX_1}-${ZONE_POSFIX_2}
       resources:
         requests:
           storage: 10Gi
-      selector:
-        matchLabels:
-          pv-type: "fst-pv"
 EOF
