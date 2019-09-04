@@ -1,4 +1,4 @@
-export POSTGRES_PASSWORD=$(kubectl get secret --namespace cid database-container-registry-postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
+export POSTGRES_PASSWORD=$(kubectl get secret --namespace cid database-psql-cid-postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
 
 
 helm install --name sonarqube --namespace cid \
