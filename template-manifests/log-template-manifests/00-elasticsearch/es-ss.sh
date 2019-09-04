@@ -91,4 +91,7 @@ spec:
       resources:
         requests:
           storage: 10Gi
+      selector:
+        matchLabels:
+          pv-type: "fst-pv"
 EOF
