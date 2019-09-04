@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: jenkins
   namespace: cid
+  labels:
+    app: jenkins
 spec:
   replicas: 1
   template:
@@ -12,6 +14,6 @@ spec:
     spec:
       containers:
       - name: jenkins
-        image: jenkins:2.32.2
+        image: jenkins:2.193
         ports:
         - containerPort: 8080

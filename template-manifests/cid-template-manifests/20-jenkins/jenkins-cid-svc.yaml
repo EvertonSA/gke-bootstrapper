@@ -3,15 +3,10 @@ kind: Service
 metadata:
   name: jenkins
   namespace: cid
-  labels:
-    k8s-app: kibana-logging
-    kubernetes.io/cluster-service: "true"
-    addonmanager.kubernetes.io/mode: Reconcile
-    kubernetes.io/name: "Kibana"
 spec:
   ports:
   - port: 5601
     protocol: TCP
     targetPort: ui
   selector:
-    k8s-app: kibana-logging
+    app: jenkins

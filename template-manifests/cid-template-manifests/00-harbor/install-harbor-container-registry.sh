@@ -1,17 +1,6 @@
-#fist install postgress
-# echo "--------------------------------------------------INSTALL POSTGRES--------------------------------------------------"
-# helm install --name database-container-registry -f ./pg-prod-values.yaml --namespace cid stable/postgresql
-# echo "--------------------------------------------------INSTALL REDIT--------------------------------------------------"
-# helm install --name cache-container-registry --namespace cid stable/redis 
-
-# sleep 3m
-
 # echo "--------------------------------------------------Get redis and psql secrets--------------------------------------------------"
-# export POSTGRES_PASSWORD=$(kubectl get secret --namespace cid database-container-registry-postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
+export POSTGRES_PASSWORD=$(kubectl get secret --namespace cid database-container-registry-postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
 # export REDIS_PASSWORD=$(kubectl get secret --namespace cid cache-container-registry-redis -o jsonpath="{.data.redis-password}" | base64 --decode)
-
-DOMAIN="evertonarakaki.tk"
-CLUSTER_NAME="sciensa-kub-cluster-001"
 
 echo "--------------------------------------------------INSTALL KUBED--------------------------------------------------"
 helm repo add appscode https://charts.appscode.com/stable/
@@ -126,12 +115,11 @@ helm install --name harbor --namespace cid \
     --set imagePullPolicy=Always \
     --set externalURL=https://harbor.${DOMAIN} \
     --set harborAdminPassword=admin \
-    --set persistence.enabled=false \
+    --set database.type=external \
+    --set database.external.host=database-container-registry-postgresql.cid.svc.cluster.local \
+    --set database.external.username=postgres\
+    --set database.external.password=$POSTGRES_PASSWORD \
+    --set redis.type=external \
+    --set redis.external.host=cache-container-registry-redis-master.cid.svc.cluster.local \
+    --set redis.external.password=$REDIS_PASSWORD \
     harbor/harbor
-    # --set database.type=external \
-    # --set database.external.host=database-container-registry-postgresql.cid.svc.cluster.local \
-    # --set database.external.username=postgres\
-    # --set database.external.password=$POSTGRES_PASSWORD \
-    # --set redis.type=external \
-    # --set redis.external.host=cache-container-registry-redis-master.cid.svc.cluster.local \
-    # --set redis.external.password=$REDIS_PASSWORD \
