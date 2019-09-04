@@ -62,3 +62,6 @@ node-pools create "pool-horizontal-autoscaling" \
     --max-nodes "2" \
     --enable-autoupgrade \
     --enable-autorepair
+
+echo "sleep 3 minutes for istio objects"
+sleep 3m

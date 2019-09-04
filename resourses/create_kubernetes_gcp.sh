@@ -20,11 +20,8 @@ echo "--- Create service account ---"
 echo "--- Create GKE cluster ---"
 . cloud-infrastructure/10-gcloud-gke.sh
 
-echo "--- create ssd storage for applications that need fast io ---"
+echo "--- create ssd storage for prometheus ---"
 . cloud-infrastructure/11-gcloud-fst-storage.sh
-
-echo "--- create standart storage for applications ---"
-. cloud-infrastructure/12-gcloud-std-storage.sh
 
 echo "--- create dns entry ---"
 . cloud-infrastructure/20-gcloud-clouddns.sh
@@ -40,7 +37,7 @@ kubectl create clusterrolebinding "cluster-admin-$(whoami)" \
 echo "--- create storage classes and persistent volumes ---"
 . gke-addons/fast-regional-storageclass.sh
 . gke-addons/standard-regional-storageclass.sh
-. gke-addons/persistent-volume-regional.sh
+. gke-addons/persistent-volume-prom.sh
 
 echo "--- enabling istio sidecar injection ---"
 kubectl apply -f ../template-manifests/cid-template-manifests/istio-sidecar

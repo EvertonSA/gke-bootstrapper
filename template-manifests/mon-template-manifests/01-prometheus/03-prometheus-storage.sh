@@ -13,8 +13,8 @@ spec:
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 20Gi
+      storage: ${PROM_PV_SIZE}
   selector:
     matchLabels:
-      pv-type: "fst-pv" 
+      pv-type: "prom-fst-pv"
 EOF

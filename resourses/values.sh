@@ -26,7 +26,7 @@ ZONE_POSFIX_2="f"
 # DNS settings:
 #CERTMANAGER_DNS='--dns01-recursive-nameservers "80.80.80.80:53,80.80.81.81:53"'
 
-PROM_PV_SIZE=50Gi # In GB. Free account only have 100Gi max ssd per region
+PROM_PV_SIZE=20Gi # In GB. Free account only have 100Gi max ssd per region
 #STD_PV_SIZE=200Gi # In GB. Free account only have 2048Gi max ssd per region
 
 #### slack specific
