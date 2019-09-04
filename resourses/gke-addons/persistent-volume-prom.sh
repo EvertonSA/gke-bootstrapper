@@ -4,7 +4,7 @@ kind: "PersistentVolume"
 metadata:
   name: prom-fst-pv
   labels:
-    pv-type: fst-pv
+    pv-type: prom-fst-pv
 spec:
   capacity:
     storage: ${PROM_PV_SIZE}
