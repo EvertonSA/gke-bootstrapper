@@ -5,7 +5,7 @@ metadata:
   name: elasticsearch
   namespace: log
   labels:
-    need_pv: true
+    need_pv: "true"
     service: elasticsearch
 spec:
   serviceName: elasticsearch
