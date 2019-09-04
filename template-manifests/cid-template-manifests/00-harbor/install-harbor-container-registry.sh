@@ -1,6 +1,6 @@
 # echo "--------------------------------------------------Get redis and psql secrets--------------------------------------------------"
 export POSTGRES_PASSWORD=$(kubectl get secret --namespace cid database-container-registry-postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
-# export REDIS_PASSWORD=$(kubectl get secret --namespace cid cache-container-registry-redis -o jsonpath="{.data.redis-password}" | base64 --decode)
+export REDIS_PASSWORD=$(kubectl get secret --namespace cid cache-container-registry-redis -o jsonpath="{.data.redis-password}" | base64 --decode)
 
 echo "--------------------------------------------------INSTALL KUBED--------------------------------------------------"
 helm repo add appscode https://charts.appscode.com/stable/

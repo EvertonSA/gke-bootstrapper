@@ -176,6 +176,7 @@ initdbScripts:
     CREATE DATABASE registry;
     CREATE DATABASE notary_server;
     CREATE DATABASE notary_signer;
+    CREATE DATABASE sonarDB;
 
 ## ConfigMap with scripts to be run at first boot
 ## NOTE: This will override initdbScripts
