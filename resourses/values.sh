@@ -8,7 +8,7 @@
 ###################################################################
 
 #### gcp_specific
-PROJECT_ID="sciensaflix"
+PROJECT_ID="gkebootstraper"
 CLUSTER_NAME="kub-cluster-001"
 REGION="us-central1"
 CLUSTER_VERSION="1.13.7-gke.19"
