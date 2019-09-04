@@ -30,7 +30,7 @@ echo "--- create dns entry ---"
 . cloud-infrastructure/20-gcloud-clouddns.sh
 
 echo "--- create dns service account"
-#. cloud-infrastructure/30-gcloud-dns-sa.sh
+. cloud-infrastructure/30-gcloud-dns-sa.sh
 
 echo "--- configure cloud shell to kubernetes via clusterrolebinding ---"
 kubectl create clusterrolebinding "cluster-admin-$(whoami)" \
@@ -41,6 +41,14 @@ echo "--- create storage classes and persistent volumes ---"
 . gke-addons/fast-regional-storageclass.sh
 . gke-addons/standard-regional-storageclass.sh
 . gke-addons/persistent-volume-regional.sh
+
+echo "--- enabling istio sidecar injection ---"
+kubectl apply -f ../template-manifests/cid-template-manifests/istio-sidecar
+kubectl apply -f ../template-manifests/log-template-manifests/istio-sidecar
+kubectl apply -f ../template-manifests/mon-template-manifests/istio-sidecar
+kubectl apply -f ../template-manifests/dev-template-manifests/istio-sidecar
+kubectl apply -f ../template-manifests/ite-template-manifests/istio-sidecar
+kubectl apply -f ../template-manifests/prd-template-manifests/istio-sidecar
 
 echo "--- taint third machine ---"
 . gke-addons/add-node-taint.sh
