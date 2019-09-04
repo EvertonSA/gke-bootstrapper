@@ -1,1 +1,0 @@
-helm install --name postgress stable/postgresql

@@ -1,9 +1,11 @@
+kubectl apply -f - <<EOF
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: elasticsearch
   namespace: log
   labels:
+    need_pv: true
     service: elasticsearch
 spec:
   serviceName: elasticsearch
@@ -85,7 +87,8 @@ spec:
         app: elasticsearch
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: fast
+      storageClassName: fst-${REGION}-${ZONE_POSFIX_1}-${ZONE_POSFIX_2}
       resources:
         requests:
           storage: 10Gi
+EOF

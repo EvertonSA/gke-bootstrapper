@@ -10,7 +10,7 @@
 #### gcp_specific
 PROJECT_ID="sciensaflix"
 CLUSTER_NAME="kub-cluster-001"
-REGION="us-central1" 
+REGION="us-central1"
 CLUSTER_VERSION="1.13.7-gke.19"
 VPC="vpc-001"
 KUB_SBN="subnet-kub"
@@ -19,14 +19,14 @@ OWNER_EMAIL="everton.arakaki@soaexpert.com.br"
 SA_EMAIL="apiadmin@${PROJECT_ID}.iam.gserviceaccount.com"
 DOMAIN="evertonarakaki.tk"
 CLOUDDNS_ZONE="istio"
-ZONE_POSFIX_1="c"
-ZONE_POSFIX_2="f"
+ZONE_POSFIX_1="b"
+ZONE_POSFIX_2="c"
 
 
 # DNS settings:
 #CERTMANAGER_DNS='--dns01-recursive-nameservers "80.80.80.80:53,80.80.81.81:53"'
 
-FAST_PV_SIZE=100Gi # In GB. Free account only have 100Gi max ssd per region
+FAST_PV_SIZE=50Gi # In GB. Free account only have 100Gi max ssd per region
 STD_PV_SIZE=200Gi # In GB. Free account only have 2048Gi max ssd per region
 
 #### slack specific

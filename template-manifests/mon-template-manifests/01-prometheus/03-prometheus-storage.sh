@@ -13,7 +13,7 @@ spec:
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 30Gi
+      storage: 20Gi
   selector:
     matchLabels:
       pv-type: "fst-pv" 
