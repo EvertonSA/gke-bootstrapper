@@ -14,7 +14,7 @@ spec:
   storageClassName: fst-${REGION}-${ZONE_POSFIX_1}-${ZONE_POSFIX_2}
   gcePersistentDisk:
     fsType: ext4
-    pdName: std-volume
+    pdName: fst-volume
 EOF
 
 # ---
