@@ -1,3 +1,4 @@
+kubectl apply -f - <<EOF
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -7,7 +8,7 @@ data:
   config.yml: |-
     global:
       resolve_timeout: 5m
-      slack_api_url: 'https://hooks.slack.com/services/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'
+      slack_api_url: '${SLACK_URL_WEBHOOK}'
     templates:
     - '/etc/alertmanager-templates/*.tmpl'
     route:
@@ -29,11 +30,10 @@ data:
     - name: 'default'
     - name: 'devops'
       slack_configs:
-      - channel: '#k8-alerts'
+      - channel: '${SLACK_CHANNEL}'
         send_resolved: true
     - name: 'dev'
       slack_configs:
-      - channel: '#k8-alerts'
+      - channel: '${SLACK_CHANNEL}'
         send_resolved: true
-
-
+EOF

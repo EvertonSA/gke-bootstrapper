@@ -1,5 +1,0 @@
-alias klog="kubectl -n log"
-alias kmon="kubectl -n mon"
-alias kdev="kubectl -n dev"
-alias kite="kubectl -n ite"
-alias kprd="kubectl -n prd"

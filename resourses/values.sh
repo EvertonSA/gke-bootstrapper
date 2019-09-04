@@ -8,15 +8,15 @@
 ###################################################################
 
 #### gcp_specific
-PROJECT_ID="sandbox-251021"
-CLUSTER_NAME="sciensa-kub-cluster-001"
+PROJECT_ID="sciensaflix"
+CLUSTER_NAME="kub-cluster-001"
 REGION="us-central1" 
 CLUSTER_VERSION="1.13.7-gke.19"
-VPC="sciensa-vpc-001"
-KUB_SBN="sciensa-subnet-kub"
-VM_SBN="sciensa-subnet-vm"
+VPC="vpc-001"
+KUB_SBN="subnet-kub"
+VM_SBN="subnet-vm"
 OWNER_EMAIL="everton.arakaki@soaexpert.com.br"
-SA_EMAIL="apiadmin@sandbox-251021.iam.gserviceaccount.com"
+SA_EMAIL="apiadmin@${PROJECT_ID}.iam.gserviceaccount.com"
 DOMAIN="evertonarakaki.tk"
 CLOUDDNS_ZONE="istio"
 ZONE_POSFIX_1="c"
@@ -26,9 +26,8 @@ ZONE_POSFIX_2="f"
 # DNS settings:
 #CERTMANAGER_DNS='--dns01-recursive-nameservers "80.80.80.80:53,80.80.81.81:53"'
 
-#TODO, find a way to pass as intreger..
-PROMETHEUS_SSD_SIZE="50" # In GB. Free account only have 100 max ssd per region
-ELASTICSEARCH_SSD_SIZE="50" # In GB. Free account only have 100 max ssd per region
+FAST_PV_SIZE=100Gi # In GB. Free account only have 100Gi max ssd per region
+STD_PV_SIZE=200Gi # In GB. Free account only have 2048Gi max ssd per region
 
 #### slack specific
 SLACK_URL_WEBHOOK="https://hooks.slack.com/services/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"

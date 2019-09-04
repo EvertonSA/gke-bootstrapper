@@ -78,7 +78,7 @@ use `kubectl -n istio-system get certificates` to check certificate progress, wh
 To debug possible errors, use: 
 ```
 kubectl -n cert-manager get pods
-kubectl -n certmanager logs -f <cert-manager-xxxxxx-xxxxxxx>
+kubectl -n cert-manager logs -f <cert-manager-xxxxxx-xxxxxxx>
 ```
 
 ### Create Kubernetes Namespaces
@@ -88,6 +88,7 @@ kubectl apply -f template-manifests/00-namespaces
 ```
 ouput:
 ```
+namespace/cid created
 namespace/dev created
 namespace/ite created
 namespace/log created
@@ -96,11 +97,12 @@ namespace/prd created
 ```
 ### Create Monitoring Objects
 
-Edit file `sciensa-kub-bootstrapper/template-manifests/mon-template-manifests/00-alertmanager/00-alertmanager-configmap.yaml` with desired Slack configurations. TODO: automatic paramater injection using values.sh
-
 ```
+source ./resourses/values.sh
 kubectl apply -f template-manifests/mon-template-manifests/istio-sidecar
+template-manifests/mon-template-manifests/00-alertmanager/00-alertmanager-configmap.sh
 kubectl apply -f template-manifests/mon-template-manifests/00-alertmanager
+template-manifests/mon-template-manifests/01-prometheus/03-prometheus-storage.sh
 kubectl apply -f template-manifests/mon-template-manifests/01-prometheus
 kubectl apply -f template-manifests/mon-template-manifests/02-kube-state-metrics
 kubectl apply -f template-manifests/mon-template-manifests/03-node-exporter
@@ -149,8 +151,6 @@ export DOMAIN="evertonarakaki.tk"
 export CLUSTER_NAME="sciensa-kub-cluster-001"
 
 
-
-
 ## Operators manual
 
 Shutdown cluster:
@@ -187,3 +187,4 @@ kmon exec -it <grafana-pod> -c grafana -- /bin/bash
 grafana-cli admin reset-admin-password admin
 ```
 
+https://gist.github.com/pydevops/cffbd3c694d599c6ca18342d3625af97
