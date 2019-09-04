@@ -87,7 +87,7 @@ spec:
         app: elasticsearch
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: std-${REGION}-${ZONE_POSFIX_1}-${ZONE_POSFIX_2}
+      storageClassName: fst-${REGION}-${ZONE_POSFIX_1}-${ZONE_POSFIX_2}
       resources:
         requests:
           storage: 10Gi
