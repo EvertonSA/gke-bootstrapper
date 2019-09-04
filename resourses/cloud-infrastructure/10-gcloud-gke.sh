@@ -28,7 +28,7 @@ clusters create $CLUSTER_NAME \
     --disk-size "30" \
     --metadata disable-legacy-endpoints=true \
     --service-account $SA_EMAIL \
-    --num-nodes "1" \
+    --num-nodes "2" \
     --enable-ip-alias \
     --network $e_VPC \
     --subnetwork $e_SBN \
