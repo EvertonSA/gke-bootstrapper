@@ -94,7 +94,7 @@ Open your browser at `https://grafana-mon.<yourdomain>.<yourSLD>` and login as a
 ###### Import Grafana Dashboards
 Under Grafana dashboard, click the `+` sign and select `Import` option. There is a lots of examples in `/sciensa-kub-bootstrapper/resourses/tmp/grafana-dashboards`. Import then using copy and paste and you are ready to go.
 
-### Create CI/CD (CID) Objects
+### Not yet ready ... Create CI/CD (CID) Objects
 ```
 
 ```

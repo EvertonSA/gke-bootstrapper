@@ -1,10 +1,10 @@
-#!/bin/bash 
+#!/bin/bash
 ###################################################################
-#Script Name	: values.sh                                                                                            
-#Description	: This file is to be loaded by the main provisioner script                                                                                  
-#Args          	: no args needed, but need to be filled in before hand                                                                                          
-#Author       	: Everton Seiei Arakaki                                                
-#Email         	: eveuca@gmail.com                                           
+#Script Name	: values.sh
+#Description	: This file is to be loaded by the main provisioner script
+#Args          	: no args needed, but need to be filled in before hand
+#Author       	: Everton Seiei Arakaki
+#Email         	: eveuca@gmail.com
 ###################################################################
 
 #### gcp_specific
@@ -19,8 +19,8 @@ OWNER_EMAIL="everton.arakaki@soaexpert.com.br"
 SA_EMAIL="apiadmin@${PROJECT_ID}.iam.gserviceaccount.com"
 DOMAIN="evertonarakaki.tk"
 CLOUDDNS_ZONE="istio"
-ZONE_POSFIX_1="b"
-ZONE_POSFIX_2="c"
+ZONE_POSFIX_1="c"
+ZONE_POSFIX_2="f"
 
 
 # DNS settings:
@@ -46,6 +46,6 @@ KUB_SBN_IP_RANGE="10.32.0.0/16"
 VM_SBN_IP_RANGE="10.0.8.0/24"
 
 
-# --- End Definitions Section ---    
+# --- End Definitions Section ---
 # check if we are being sourced by another script or shell
 [[ "${#BASH_SOURCE[@]}" -gt "1" ]] && { return 0; }
