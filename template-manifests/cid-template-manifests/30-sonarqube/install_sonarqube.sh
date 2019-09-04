@@ -1,7 +1,8 @@
 export POSTGRES_PASSWORD=$(kubectl get secret --namespace cid database-psql-cid-postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
 
 
-helm install --name sonarqube --namespace cid \
+helm install  --namespace cid \
+  --set image.tag=6.7.7-community \
   --set service.type=ClusterIP \
   --set database.type=postgresql \
   --set postgresql.enabled=false \
