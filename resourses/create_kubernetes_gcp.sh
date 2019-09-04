@@ -39,6 +39,9 @@ echo "--- create storage classes and persistent volumes ---"
 . gke-addons/standard-regional-storageclass.sh
 . gke-addons/persistent-volume-prom.sh
 
+echo "--- kubectl apply standard namespaces ---"
+kubectl apply -f ../template-manifests/00-namespaces
+
 echo "--- enabling istio sidecar injection ---"
 kubectl apply -f ../template-manifests/cid-template-manifests/istio-sidecar
 kubectl apply -f ../template-manifests/log-template-manifests/istio-sidecar
@@ -61,9 +64,6 @@ echo "--- install letsencrypt prod issuer ---"
 
 echo "--- install flagger ---"
 . gke-addons/install-flagger-gke.sh
-
-echo "--- kubectl apply standard namespaces ---"
-kubectl apply -f ../template-manifests/00-namespaces
 
 echo "--- install mon objects ---"
 . ../template-manifests/mon-template-manifests/00-alertmanager/00-alertmanager-configmap.sh
