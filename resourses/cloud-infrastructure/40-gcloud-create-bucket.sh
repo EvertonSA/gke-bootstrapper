@@ -1,0 +1,1 @@
+gsutil mb gs://${REGISTRY_BUCKET_NAME}/

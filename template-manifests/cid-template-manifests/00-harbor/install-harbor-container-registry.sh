@@ -115,6 +115,10 @@ helm install --name harbor --namespace cid \
     --set imagePullPolicy=Always \
     --set externalURL=https://harbor.${DOMAIN} \
     --set harborAdminPassword=admin \
+    --set persistence.persistentVolumeClaim.jobservice.storageClass=fst-${REGION}-${ZONE_POSFIX_1}-${ZONE_POSFIX_2} \
+    --set persistence.imageChartStorage.type=gcs \
+    --set persistence.imageChartStorage.gcs.bucket=${REGISTRY_BUCKET_NAME} \
+    --set persistence.imageChartStorage.gcs.encodedkey=../../../resourses/gcp-gcs-admin-base64.json \
     --set database.type=external \
     --set database.external.host=database-psql-cid-postgresql.cid.svc.cluster.local \
     --set database.external.username=postgres\
