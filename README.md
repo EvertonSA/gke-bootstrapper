@@ -99,7 +99,7 @@ Under Grafana dashboard, click the `+` sign and select `Import` option. There is
 
 ### Not yet ready ... Create CI/CD (CID) Objects
 ```
-
+FALTA VOCÊ INSTALA O CERTIFICADO DO GATEWAY AUTOMATICAMENTE... VAI SER TRAMPO, MAS É NECESSÁRIO PRA O HARBOR FUNCIONA VAI VC CONSEGUE
 ```
 
 ## Operators manual
