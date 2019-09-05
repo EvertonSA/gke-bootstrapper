@@ -81,4 +81,3 @@ echo "--- install cid objects ---"
 . ../template-manifests/cid-template-manifests/98-redis/install-redis.sh
 . ../template-manifests/cid-template-manifests/20-jenkins/install-jenkins.sh
 . ../template-manifests/cid-template-manifests/30-jenkins/install-sonarqube.sh
-. ../template-manifests/cid-template-manifests/00-harbor/install-harbor-container-registry.sh

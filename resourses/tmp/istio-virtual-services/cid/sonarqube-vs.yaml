@@ -1,14 +1,14 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: backend-test
-  namespace: dev
+  name: sonarqube-cid
+  namespace: cid
 spec:
   hosts:
-  - "backend-spring.arakaki.in"
+  - "sonarqube-cid.evertonarakaki.tk"
   gateways:
   - public-gateway.istio-system.svc.cluster.local
   http:
   - route:
     - destination:
-        host: backend-spring
+        host: cid-sonarqube

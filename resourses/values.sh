@@ -26,8 +26,8 @@ CLUSTER_VERSION="1.13.7-gke.19"
 VPC="vpc-001"
 KUB_SBN="subnet-kub"
 VM_SBN="subnet-vm"
-ZONE_POSFIX_1="c"
-ZONE_POSFIX_2="f"
+ZONE_POSFIX_1="a"
+ZONE_POSFIX_2="b"
 
 #### do not modify bellow ####
 
