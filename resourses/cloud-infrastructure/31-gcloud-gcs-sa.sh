@@ -20,5 +20,7 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 --member=serviceAccount:gcs-admin@${PROJECT_ID}.iam.gserviceaccount.com \
 --role=roles/storage.objectAdmin
 
-base64 ./gcp-gcs-admin.json -w 0 > ./gcp-gcs-admin-base64.json
-rm -rf ./gcp-gcs-admin.json
+gsutil hmac create gcs-admin@${PROJECT_ID}.iam.gserviceaccount.com > ./gcp-gcs-admin.json
+
+base64 ./gcp-gcs-admin.json -w 0 > ./gcp-gcs-hmac-admin-base64.json
+#rm -rf ./gcp-gcs-admin.json

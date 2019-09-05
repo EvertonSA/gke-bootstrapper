@@ -21230,7 +21230,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Kubernetes Nodes - 01 (Node Exporter)",
+  "title": "Kubernetes Nodes Metrics Dashboard",
   "uid": "Vq1Wj2_mz",
   "version": 3
 }

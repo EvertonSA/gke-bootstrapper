@@ -1687,7 +1687,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Kubernetes Deployment metrics",
+  "title": "Kubernetes Deployment Metrics Dashboard",
   "uid": "XOE4JCfmz",
   "version": 11
 }

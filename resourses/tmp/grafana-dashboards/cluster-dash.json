@@ -2171,7 +2171,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Kubernetes cluster monitoring (via Prometheus)",
+  "title": "Kubernetes Cluster Metrics Dashboard",
   "uid": "-2kz1jfik",
   "version": 1
 }

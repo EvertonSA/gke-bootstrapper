@@ -1155,7 +1155,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Kubernetes App Metrics",
+  "title": "Kubernetes App Metrics Dashboard",
   "uid": "uAXHJjBik",
   "version": 2
 }
