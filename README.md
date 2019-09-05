@@ -97,9 +97,10 @@ Open your browser at `https://grafana-mon.<yourdomain>.<yourSLD>` and login as a
 ###### Import Grafana Dashboards
 Under Grafana dashboard, click the `+` sign and select `Import` option. There is a lots of examples in `/sciensa-kub-bootstrapper/resourses/tmp/grafana-dashboards`. Import then using copy and paste and you are ready to go.
 
-### Not yet ready ... Create CI/CD (CID) Objects
+### Building block - Create Harbor Container Registry
+
+TODO: descrever e testar
 ```
-FALTA VOCÊ INSTALA O CERTIFICADO DO GATEWAY AUTOMATICAMENTE... VAI SER TRAMPO, MAS É NECESSÁRIO PRA O HARBOR FUNCIONA VAI VC CONSEGUE
 ```
 
 ## Operators manual
