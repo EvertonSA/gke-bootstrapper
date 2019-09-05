@@ -8,7 +8,7 @@
 ###################################################################
 
 #### Modify bellow according to your project
-PROJECT_ID="gkebootstraper"
+PROJECT_ID="gke-bootstraper"
 CLUSTER_NAME="kub-cluster-001"
 REGION="us-central1"
 OWNER_EMAIL="everton.arakaki@soaexpert.com.br"
@@ -20,7 +20,7 @@ SLACK_USER="flagger"
 #### not needed to modify, but you can, at your own risk :) ####
 
 PROM_PV_SIZE=20Gi # In GB.
-REGISTRY_BUCKET_NAME="harbor-registry"
+REGISTRY_BUCKET_NAME="cid-registry"
 SA_EMAIL="apiadmin@${PROJECT_ID}.iam.gserviceaccount.com"
 CLUSTER_VERSION="1.13.7-gke.19"
 VPC="vpc-001"
