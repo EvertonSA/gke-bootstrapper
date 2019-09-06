@@ -8,7 +8,7 @@
 ###################################################################
 
 #### Modify bellow according to your project
-PROJECT_ID="gke-bootstraper"
+PROJECT_ID="sciensa-sandbox"
 CLUSTER_NAME="kub-cluster-001"
 REGION="us-central1"
 OWNER_EMAIL="everton.arakaki@soaexpert.com.br"
@@ -22,7 +22,7 @@ SLACK_USER="flagger"
 PROM_PV_SIZE=20Gi # In GB.
 REGISTRY_BUCKET_NAME="cid-registry"
 SA_EMAIL="apiadmin@${PROJECT_ID}.iam.gserviceaccount.com"
-CLUSTER_VERSION="1.13.7-gke.19"
+CLUSTER_VERSION="1.13.7-gke.24"
 VPC="vpc-001"
 KUB_SBN="subnet-kub"
 VM_SBN="subnet-vm"

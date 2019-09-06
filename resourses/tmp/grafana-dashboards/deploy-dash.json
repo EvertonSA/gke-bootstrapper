@@ -1,4 +1,5 @@
 {
+  "title": "Kubernetes Deployment Metrics Dashboard",
   "__inputs": [
     {
       "name": "DS_PROMETHEUS",
@@ -1687,7 +1688,6 @@
     ]
   },
   "timezone": "browser",
-  "title": "Kubernetes Deployment Metrics Dashboard",
   "uid": "XOE4JCfmz",
   "version": 11
 }

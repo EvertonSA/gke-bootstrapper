@@ -7,7 +7,9 @@ This section explain how to use this repository to bootstrap a production ready 
 
 ### Clone the GCP bootstrapper repository
 
-It is required t use Google Cloud Shell!!! 
+It is required t use Google Cloud Shell. 
+Cloud Shell is a stable GCP terminal with access to Cloud resources.  It provides development tools, programming languages compilers and interpreters, and 5Gi of disk available for life. Security can be handled by applying roles glanularity to your GCP User in a organization context. In GCP you should addopt Cloud Shell as your defacto tool. No questions asked. 
+
 
 ```
 REPO_URL="https://bitbucket.org/sciensa/gke-bootstrapper/"
@@ -26,19 +28,49 @@ cd gke-bootstrapper
 | `SLACK_CHANNEL`          | Slack channel                                                                                                          | sciensaflix                                                                                      |
 | `SLACK_USER`             | Slack user                                                                                                             | flagger                                                                                                     |
 
-### Run main provisioner script
+### Run GKE provisioner script
 
 To provision the cluster and other necessary resources, use the bellow script.
 ```
-resources/create_kubernetes_gcp.sh
+cd resources
+./00-build-kubernetes-gcp.sh
+```
+This will create the underlaying cloud infrastructure for the GKE cluster, deploy a GKE prodcution ready cluster and install three major components:
+- helm (package manager)
+- istio (service mesh)
+- cert-manager (Let's Encrypt TLS certificate manager)
+
+By production ready, it means: Google Kubernetes Engine Multizonal Cluster (4 x n1-standard-2) With Horizontal Node Autoscaling. 
+
+It also deploys a zone under CloudDNS. CloudDNS is the Route53 of GCP. 
+
+The zone is named `istio` and it is configured to work with the GKE istio load balancer.
+
+*Only continue to the next step when the istio objects are up and running. There is a strict dependency of the other objects to istio control plane*
+
+You chan check the progress by running `kubectl get pods -n istio-system`. The ouput should be the following:
+
+```
+NAME                                       READY   STATUS      RESTARTS   AGE
+istio-citadel-5949896b4b-dfrlh             1/1     Running     0          18m
+istio-cleanup-secrets-1.1.12-v67hn         0/1     Completed   0          18m
+istio-galley-d87867b67-vh8pd               1/1     Running     0          18m
+istio-ingressgateway-7c96766d85-ds6kt      1/1     Running     0          18m
+istio-init-crd-10-2-c6wrt                  0/1     Completed   0          18m
+istio-init-crd-11-2-52mpn                  0/1     Completed   0          18m
+istio-pilot-797844976c-xc2ts               2/2     Running     0          18m
+istio-policy-99fd7f7f5-6rdmz               2/2     Running     8          18m
+istio-security-post-install-1.1.12-947tm   0/1     Completed   5          18m
+istio-sidecar-injector-5b5454d777-nrcj9    1/1     Running     7          18m
+istio-telemetry-cdf9c6d7-q9zgj             2/2     Running     8          18m
+promsd-76f8d4cff8-nfghj                    2/2     Running     1          18m
 ```
 
-It might take 5-10 minutes for your infra to be running + all objects to be provisioned.
+TODO: Terraform the sh*t out of this script.
 
+#### POSTBUILD: Create Ingress Gateway Letsencrypt certificate and configure DNS
 
-### Create Ingress Gateway Letsencrypt certificate and configure DNS
-
-#### Confige DNS
+##### Confige DNS
 Under CloudDNS, go to the created zone and copy the nameservers created for your domain:
 
     ns-cloud-c1.googledomains.com.
@@ -48,7 +80,7 @@ Under CloudDNS, go to the created zone and copy the nameservers created for your
 
 Edit your domain provider to use the nameservers gathered previusly.
 
-#### Gateway certificate
+##### Gateway certificate
 Edit file `resourses/tmp/ssl-certificates/10-istio-gateway-cert.yaml`, changing `commonName` and `domains` entries with your domain information:
 ```
 apiVersion: certmanager.k8s.io/v1alpha1
@@ -77,21 +109,189 @@ To debug possible errors, use:
 kubectl -n cert-manager get pods
 kubectl -n cert-manager logs -f <cert-manager-xxxxxx-xxxxxxx>
 ```
-##### Configure Grafana
 
-###### Edit Istio Virtual Service Grafana file
-There is an example file under ```sciensa-kub-bootstrapper/resourses/tmp/istio-virtual-services/grafana-mon-vs.yaml```. Edit this file according to your domain info and apply using ```kubectl apply -f sciensa-kub-bootstrapper/resourses/tmp/istio-virtual-services/grafana-mon-vs.yaml ```. This will deploy a subdomain under the SLD and you can access it using `https://grafana-mon.<yourdomain>.<yourSLD>`.
+For testing, you can copy and paste the bellow code (of course, change DOMAIN to your domain): 
 
-###### Configure Grafana Datasource
-Open your browser at `https://grafana-mon.<yourdomain>.<yourSLD>` and login as admin:admin. Change the default admin password and store safely (prefer to use Vault, but Keepass is also an option). Click `Add Datasource` > `Prometheus` and fill the following values:
+```
+DOMAIN="evertonarakaki.tk"
+helm repo add sp https://stefanprodan.github.io/podinfo
+helm upgrade my-release --install sp/podinfo 
+kubectl apply -f - <<EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: test-gke-pod
+  namespace: default
+spec:
+  hosts:
+   - "test-gke-pod.${DOMAIN}"
+  gateways:
+  - public-gateway.istio-system.svc.cluster.local
+  http:
+  - route:
+    - destination:
+        host: my-release-podinfo
+        port:
+          number: 9898
+EOF
+```
 
-| Parameter | Value                          |
-|-----------|--------------------------------|
-| Name      | prometheus.mon                 |
-| HTTP.URL  | http://prometheus-service:8080 |
+To cleanup this test pod, run:
 
-###### Import Grafana Dashboards
-Under Grafana dashboard, click the `+` sign and select `Import` option. There is a lots of examples in `/sciensa-kub-bootstrapper/resourses/tmp/grafana-dashboards`. Import then using copy and paste and you are ready to go.
+```
+helm delete --purge my-release
+kubectl delete virtualservice test-gke-pod
+```
+
+Access https://test-gke-pod.${DOMAIN}. If you have an error, you probably forgot to delete the istio-gateway pod or to change tour nameserver config.
+
+From now on, your cluster is ready to be used. It is a raw cluster, no observability by default. We recommend following the bellow steps to deploy the mon, log and cid stack.
+
+### Run LOG provisioner script
+
+To provision logging resources, use the bellow script.
+```
+./10-build-log-objects.sh
+```
+
+This will provision 3 log resources:
+- Elasticsearch (3 nodes) as Statefulset
+- Fluentd as Daemonset (spread all over the VM's)
+- Kibana 
+
+You chan check the progress by running `kubectl -n log get pods`. The ouput should be the following:
+
+```
+NAME                              READY   STATUS    RESTARTS   AGE
+elasticsearch-0                   2/2     Running   0          2m12s
+elasticsearch-1                   2/2     Running   0          83s
+elasticsearch-2                   2/2     Running   0          52s
+fluentd-6825s                     2/2     Running   1          2m10s
+fluentd-fl579                     2/2     Running   1          2m10s
+fluentd-lnjqt                     2/2     Running   1          2m10s
+fluentd-vl5xq                     2/2     Running   1          2m10s
+kibana-logging-5db895d95c-hr8ds   2/2     Running   0          2m9s
+```
+
+As Kibana does not provide a authentication, I chose not to keep it public. To access Kibana (https://kibana-log.YOURDOMAIN.COM), run the bellow command (can be found under resourses/tmp/istio-virtual-services/log/kibana-log-vs.yaml)
+
+```
+DOMAIN="evertonarakaki.tk"
+kubectl apply -f - <<EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kibana
+  namespace: log
+spec:
+  hosts:
+  - "kibana-log.${DOMAIN}"
+  gateways:
+  - public-gateway.istio-system.svc.cluster.local
+  http:
+  - route:
+    - destination:
+        host: kibana-logging
+EOF
+```
+
+Kibana is not configured and it will require further work to have enhanced observability, but the fluentd daemonset is already collecting data from all applications logging to stdout. To check it, create an index pattern `*` and bound to `@timestamp`. This will give you some nice information on *Discover* window:
+
+```
+September 6th 2019, 15:49:04.000	GET /api/status 200 2ms - 9.0B
+September 6th 2019, 15:49:02.000	GET /api/status 200 6ms - 9.0B
+September 6th 2019, 15:48:54.000	GET /api/status 200 2ms - 9.0B
+```
+
+Delete the VirtualService when you are done playing around. It is not safe to have Kibana open to the world.
+
+```
+kubectl -n log  delete virtualservice kibana 
+```
+
+TODO: implement security authentication layer over Kibana
+
+### Run MON provisioner script
+
+To provision logging resources, use the bellow script.
+```
+./10-build-mon-objects.sh
+```
+
+You chan check the progress by running `kubectl -n log get pods`. The ouput should be the following:
+
+```
+alertmanager-d5475f677-4d4xl            2/2     Running   0          22m
+grafana-6ddd9cc4d5-7ptst                3/3     Running   0          81s
+kube-state-metrics-d575c5f88-x25gg      3/3     Running   2          22m
+node-exporter-7spfm                     1/1     Running   0          22m
+node-exporter-rsjbn                     1/1     Running   0          22m
+node-exporter-szgdp                     1/1     Running   0          22m
+node-exporter-vpbbv                     1/1     Running   0          22m
+prometheus-deployment-5466b4584-glxv2   2/2     Running   0          22m
+```
+
+There are 4 Dashboards already configured + alertmanager sending slackwebhooks in case some metrics goes wild. 
+
+To visualize the grafana, use be bellow code, replacing the DOMAIN value with your domain. 
+
+```
+DOMAIN="evertonarakaki.tk"
+kubectl apply -f - <<EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: grafana
+  namespace: mon
+spec:
+  hosts:
+  - "grafana-mon.${DOMAIN}"
+  gateways:
+  - public-gateway.istio-system.svc.cluster.local
+  http:
+  - route:
+    - destination:
+        host: grafana
+EOF
+```
+
+Default admin user is `admin` and the password can be gathered with:
+```
+kubectl get secret --namespace mon grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+```
+
+It is a best practice to create readonly users to bussiness guys and first level support. 
+
+## Operators manual
+
+Shutdown cluster:
+```
+gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=default-pool
+gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=pool-horizontal-autoscaling
+```
+
+Turn on cluster:
+```
+gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=1 --region=us-central1 --node-pool=default-pool
+gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=1 --region=us-central1 --node-pool=pool-horizontal-autoscaling
+```
+
+Interesting alias:
+```
+alias klog="kubectl -n log"
+alias kmon="kubectl -n mon"
+alias kcid="kubectl -n cid"
+alias kdev="kubectl -n dev"
+alias kite="kubectl -n ite"
+alias kprd="kubectl -n prd"
+```
+
+Force Deployment/Statefulset update without deleting
+```
+kmon patch deployments prometheus-deployment -p  "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"dummy-date\":\"`date +'%s'`\"}}}}}"
+```
+
+# Below is not ok, still TBD
 
 ###### Configure Jenkins to deploy to Kubernetes
 
@@ -123,44 +323,11 @@ kubectl -n <NAMESPACE> get secrets <SECRETNAME> -o go-template --template '{{ind
 On Jenkins, navigate in the folder you want to add the token in, or go on the main page. Then click on the "Credentials" item in the left menu and find or create the "Domain" you want. Finally, paste your token into a Secret text credential. The ID is the credentialsId you need to use in the plugin configuration.
 
 
-### Building block - Create Harbor Container Registry
+### Building Block Continous Integration / Continous Delivery
 
-TODO: descrever e testar
 ```
-```
-
-## Operators manual
-
-Shutdown cluster:
-```
-gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=default-pool
-gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=pool-horizontal-autoscaling
 ```
 
-Turn on cluster:
-```
-gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=1 --region=us-central1 --node-pool=default-pool
-gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=1 --region=us-central1 --node-pool=pool-horizontal-autoscaling
-```
 
-Interesting alias:
-```
-alias klog="kubectl -n log"
-alias kmon="kubectl -n mon"
-alias kcid="kubectl -n cid"
-alias kdev="kubectl -n dev"
-alias kite="kubectl -n ite"
-alias kprd="kubectl -n prd"
-```
 
-Force Deployment/Statefulset update without deleting
-```
-kmon patch deployments prometheus-deployment -p  "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"dummy-date\":\"`date +'%s'`\"}}}}}"
-```
-
-Reset Grafana admin password to admin:
-```
-kmon get pods
-kmon exec -it <grafana-pod> -c grafana -- /bin/bash
-grafana-cli admin reset-admin-password admin
-```
+helm install --name my-release stable/grafana
