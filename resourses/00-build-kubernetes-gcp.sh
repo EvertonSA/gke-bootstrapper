@@ -11,6 +11,9 @@ source values.sh
 
 gcloud config set project $PROJECT_ID
 
+echo "--- Enabling API ---"
+. cloud-infrastructure/00-enable-gcloud-api.sh
+
 echo "--- Provision network stuff ---"
 . cloud-infrastructure/00-gcloud-network.sh
 
@@ -50,9 +53,6 @@ kubectl apply -f ../template-manifests/dev-template-manifests/istio-sidecar
 kubectl apply -f ../template-manifests/ite-template-manifests/istio-sidecar
 kubectl apply -f ../template-manifests/prd-template-manifests/istio-sidecar
 
-echo "--- taint third machine ---"
-. gke-addons/add-node-taint.sh
-
 echo "--- install helm on gke ---"
 . gke-addons/install-helm-gke.sh
 
@@ -61,23 +61,3 @@ echo "--- install cert-manager for TLS with letsencrypt ---"
 
 echo "--- install letsencrypt prod issuer ---"
 . cert-manager-manifests/00-letsencrypt-prod-issuer.sh
-
-echo "--- install flagger ---"
-. gke-addons/install-flagger-gke.sh
-
-echo "--- install mon objects ---"
-. ../template-manifests/mon-template-manifests/00-alertmanager/00-alertmanager-configmap.sh
-. ../template-manifests/mon-template-manifests/01-prometheus/03-prometheus-storage.sh
-. gke-addons/install-mon-objects.sh
-
-echo "--- install log objects ---"
-. ../template-manifests/log-template-manifests/00-elasticsearch/es-ss.sh
-kubectl apply -f ../template-manifests/log-template-manifests/00-elasticsearch
-kubectl apply -f ../template-manifests/log-template-manifests/10-fluentd
-kubectl apply -f ../template-manifests/log-template-manifests/20-kibana
-
-echo "--- install cid objects ---"
-. ../template-manifests/cid-template-manifests/99-psql/install-psql.sh
-. ../template-manifests/cid-template-manifests/98-redis/install-redis.sh
-. ../template-manifests/cid-template-manifests/20-jenkins/install-jenkins.sh
-. ../template-manifests/cid-template-manifests/30-jenkins/install-sonarqube.sh

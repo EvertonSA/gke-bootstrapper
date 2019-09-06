@@ -123,9 +123,8 @@ kubectl -n <NAMESPACE> get secrets <SECRETNAME> -o go-template --template '{{ind
 On Jenkins, navigate in the folder you want to add the token in, or go on the main page. Then click on the "Credentials" item in the left menu and find or create the "Domain" you want. Finally, paste your token into a Secret text credential. The ID is the credentialsId you need to use in the plugin configuration.
 
 
-### Building block - Create Harbor Container Registry
+### Building Block Continous Integration / Continous Delivery
 
-TODO: descrever e testar
 ```
 ```
 

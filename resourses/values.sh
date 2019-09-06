@@ -8,7 +8,7 @@
 ###################################################################
 
 #### Modify bellow according to your project
-PROJECT_ID="gke-bootstraper"
+PROJECT_ID="sciensa-sandbox"
 CLUSTER_NAME="kub-cluster-001"
 REGION="us-central1"
 OWNER_EMAIL="everton.arakaki@soaexpert.com.br"
