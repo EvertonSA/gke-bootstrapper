@@ -7,10 +7,6 @@
 #Email         	: eveuca@gmail.com                                           
 ###################################################################
 
-#install flagger istio gateway
-REPO=https://raw.githubusercontent.com/weaveworks/flagger/master
-kubectl apply -f ${REPO}/artifacts/gke/istio-gateway.yaml
-
 #Install Prometheus for telegraphy
 ## TODO: need to check version, 1.1.10-gke.0 is not working for this deployment
 kubectl -n istio-system apply -f \
