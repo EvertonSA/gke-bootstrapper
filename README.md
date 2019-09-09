@@ -1,4 +1,4 @@
-# Sciensa k8s bootstrapper
+#GKE k8s bootstrapper
 
 ## Overwall architechture
 
