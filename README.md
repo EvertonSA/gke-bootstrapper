@@ -2,6 +2,10 @@
 
 ## Overwall architechture
 
+![GKE Cloud Infra Architechture](resources/tmp/gke-bootstrapper-infra.jpg)
+
+![GKE Resources Architechture](resources/tmp/gke-architec.jpg)
+
 ## How to use this repository
 This section explain how to use this repository to bootstrap a production ready GKE cluster. Change values and script according to your needs, but keep in mind that the defaults are working properly and changes to scripts and YAML's might destroy the sinergy of the scripts.
 
