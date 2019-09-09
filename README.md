@@ -1,4 +1,4 @@
-#GKE k8s bootstrapper
+# GKE k8s bootstrapper
 
 ## Overwall architechture
 
@@ -16,7 +16,7 @@ Cloud Shell is a stable GCP terminal with access to Cloud resources.  It provide
 
 
 ```
-REPO_URL="https://bitbucket.org/sciensa/gke-bootstrapper/"
+REPO_URL="https://source.cloud.google.com/sandbox-216902/gke-cluster-bootstrapper"
 git clone $REPO_URL
 cd gke-bootstrapper
 ```
@@ -25,12 +25,12 @@ cd gke-bootstrapper
 | Parameter                | Description                                                                                                            | Example                                                                                                     |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
 | `PROJECT_ID`             | gcloud project id                                                                                                      | sandbox-251021                                                                                              |
-| `CLUSTER_NAME`           | name of GKE cluster                                                                                                    | sciensa-kub-cluster-001                                                                                     |
+| `CLUSTER_NAME`           | name of GKE cluster                                                                                                    | kub-cluster-001                                                                                     |
 | `REGION`                 | VPC region to host infra, OPTIONS = {"lowest_price":["us-central1", "us-west1", "us-east1"], "lowest_latency":["southamerica-east1"]}                                                                                              | us-central1  |
-| `OWNER_EMAIL`            | owner email of the GCP account                                                                                         | everton.arakaki@soaexpert.com.br                                                                            |
+| `OWNER_EMAIL`            | owner email of the GCP account                                                                                         | eveuca@gmail.com                                                                            |
 | `SLACK_URL_WEBHOOK`      | https://lmgtfy.com/?q=how+to+get+slack+webhook+url                                                                     |                                                                                                             |
-| `SLACK_CHANNEL`          | Slack channel                                                                                                          | sciensaflix                                                                                      |
-| `SLACK_USER`             | Slack user                                                                                                             | flagger                                                                                                     |
+| `SLACK_CHANNEL`          | Slack channel                                                                                                          | meucanalnoslack                                                                                      |
+| `SLACK_USER`             | Slack user                                                                                                             | usuarioroboslack                                                                                                     |
 
 ### Run GKE provisioner script
 
@@ -270,14 +270,14 @@ It is a best practice to create readonly users to bussiness guys and first level
 
 Shutdown cluster:
 ```
-gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=default-pool
-gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=pool-horizontal-autoscaling
+gcloud container clusters resize kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=default-pool
+gcloud container clusters resize kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=pool-horizontal-autoscaling
 ```
 
 Turn on cluster:
 ```
-gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=1 --region=us-central1 --node-pool=default-pool
-gcloud container clusters resize sciensa-kub-cluster-001 --num-nodes=1 --region=us-central1 --node-pool=pool-horizontal-autoscaling
+gcloud container clusters resize kub-cluster-001 --num-nodes=1 --region=us-central1 --node-pool=default-pool
+gcloud container clusters resize kub-cluster-001 --num-nodes=1 --region=us-central1 --node-pool=pool-horizontal-autoscaling
 ```
 
 Interesting alias:
