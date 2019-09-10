@@ -7,11 +7,11 @@ spec:
   secretName: istio-ingressgateway-certs
   issuerRef:
     name: letsencrypt-prod
-  commonName: "*.evertonarakaki.tk"
+  commonName: "*.arakaki.in"
   acme:
     config:
     - dns01:
         provider: cloud-dns
       domains:
-      - "*.evertonarakaki.tk"
-      - "evertonarakaki.tk"
+      - "*.arakaki.in"
+      - "arakaki.in"

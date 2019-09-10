@@ -63,5 +63,5 @@ node-pools create "pool-horizontal-autoscaling" \
     --enable-autoupgrade \
     --enable-autorepair
 
-echo "sleep 3 minutes for istio objects"
-sleep 3m
+echo "sleep 10 minutes for istio objects... yes. 10 minutes. its better to wait 10 minutes then destroy your cluster because you rushed..."
+sleep 10m

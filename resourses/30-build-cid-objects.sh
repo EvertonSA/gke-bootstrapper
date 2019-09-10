@@ -15,7 +15,8 @@ echo "--- install flagger ---"
 . gke-addons/install-flagger-gke.sh
 
 echo "--- install cid objects ---"
-. ../template-manifests/cid-template-manifests/99-psql/install-psql.sh
+. ../template-manifests/cid-template-manifests/99-psql/install-psql.sh ../template-manifests/cid-template-manifests/99-psql/pg-cid-values.yaml
 . ../template-manifests/cid-template-manifests/98-redis/install-redis.sh
 . ../template-manifests/cid-template-manifests/20-jenkins/install-jenkins.sh
-. ../template-manifests/cid-template-manifests/30-jenkins/install-sonarqube.sh
+. ../template-manifests/cid-template-manifests/30-sonarqube/install_sonarqube.sh
+. ../template-manifests/cid-template-manifests/00-harbor/install-harbor-container-registry.sh

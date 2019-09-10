@@ -21,4 +21,4 @@ helm install --wait \
      jetstack/cert-manager
 
 #for .tk domains
-kubectl patch deployment cert-manager -n cert-manager -p '{"spec":{"template":{"spec":{"containers":[{"name":"cert-manager","args":["--v=2","--cluster-resource-namespace=$(POD_NAMESPACE)","--leader-election-namespace=$(POD_NAMESPACE)","--dns01-recursive-nameservers=80.80.80.80:53","--dns01-recursive-nameservers=80.80.81.81:53"]}]}}}}'
+kubectl patch deployment cert-manager -n cert-manager -p '{"spec":{"template":{"spec":{"containers":[{"name":"cert-manager","args":["--v=2","--cluster-resource-namespace=$(POD_NAMESPACE)","--leader-election-namespace=$(POD_NAMESPACE)","--dns01-recursive-nameservers=80.80.80.80:53","--dns01-recursive-nameservers=80.80.81.81:53", "--dns01-recursive-nameservers=8.8.8.8:53"]}]}}}}'

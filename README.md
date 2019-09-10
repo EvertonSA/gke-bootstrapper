@@ -11,9 +11,8 @@ This section explain how to use this repository to bootstrap a production ready 
 
 ### Clone the GCP bootstrapper repository
 
-It is required t use Google Cloud Shell. 
-Cloud Shell is a stable GCP terminal with access to Cloud resources.  It provides development tools, programming languages compilers and interpreters, and 5Gi of disk available for life. Security can be handled by applying roles glanularity to your GCP User in a organization context. In GCP you should addopt Cloud Shell as your defacto tool. No questions asked. 
-
+It is required to use Google Cloud Shell. 
+Google Cloud Shell is a browser-based terminal that Google provides to interact with your GCP resources. It is backed by a free Compute Engine instance that comes with many useful tools already installed, including everything required to run this bootstrapper.
 
 ```
 REPO_URL="https://source.cloud.google.com/sandbox-216902/gke-cluster-bootstrapper"
@@ -35,14 +34,17 @@ cd gke-bootstrapper
 ### Run GKE provisioner script
 
 To provision the cluster and other necessary resources, use the bellow script.
+
 ```
 cd resources
 ./00-build-kubernetes-gcp.sh
 ```
+
 This will create the underlaying cloud infrastructure for the GKE cluster, deploy a GKE prodcution ready cluster and install three major components:
-- helm (package manager)
-- istio (service mesh)
-- cert-manager (Let's Encrypt TLS certificate manager)
+
+ - helm (package manager)
+ - istio (service mesh)
+ - cert-manager (Let's Encrypt TLS certificate manager)
 
 By production ready, it means: Google Kubernetes Engine Multizonal Cluster (4 x n1-standard-2) With Horizontal Node Autoscaling. 
 
@@ -85,8 +87,12 @@ Under CloudDNS, go to the created zone and copy the nameservers created for your
 Edit your domain provider to use the nameservers gathered previusly.
 
 ##### Gateway certificate
-Edit file `resourses/tmp/ssl-certificates/10-istio-gateway-cert.yaml`, changing `commonName` and `domains` entries with your domain information:
+
+To have Letsencrypt, we need to request a valid TLS certificate from Letsencrypt Certificate Authority. In `resourses/tmp/ssl-certificates/10-istio-gateway-cert.yaml`, you will find a template of a certificate to be applyed to your cluster. You can edit it and apply using `kubectl apply -f <FILE>` or simply use the snippet bellow, of course with your domain information. 
+
 ```
+DOMAIN="arakaki.in"
+kubectl apply -f - <<EOF
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
@@ -96,17 +102,27 @@ spec:
   secretName: istio-ingressgateway-certs
   issuerRef:
     name: letsencrypt-prod
-  commonName: "*.YOURDOMAIN.COM"
+  commonName: "*.${DOMAIN}"
   acme:
     config:
     - dns01:
         provider: cloud-dns
       domains:
-      - "*.YOURDOMAIN.COM"
-      - "YOURDOMAIN.COM"
+      - "*.${DOMAIN}"
+      - "${DOMAIN}"
+EOF
 ```
-This is a wildcarded certificate, meaning that all subdomains connections will be wrapped with TLS using one and only one certificate.
-use `kubectl -n istio-system get certificates` to check certificate progress, when the certificate is Ready, use `kubectl -n istio-system delete pods -l istio=ingressgateway` to kill the ingress pod and renew secrets.
+This is a wildcarded certificate, meaning that all subdomains connections will be wrapped with TLS using one and only one certificate.To see if your certificate is ready:
+
+```
+kubectl -n istio-system get certificates
+```
+
+When the certificate is Ready, you will need to renew Istio Pod to use the new certificate. As your Istio Pod is scheduled using a Deployment object, you can simply kill de pod with: 
+
+```
+kubectl -n istio-system delete pods -l istio=ingressgateway
+``` 
 
 To debug possible errors, use:
 ```
@@ -117,7 +133,7 @@ kubectl -n cert-manager logs -f <cert-manager-xxxxxx-xxxxxxx>
 For testing, you can copy and paste the bellow code (of course, change DOMAIN to your domain): 
 
 ```
-DOMAIN="evertonarakaki.tk"
+DOMAIN="arakaki.in"
 helm repo add sp https://stefanprodan.github.io/podinfo
 helm upgrade my-release --install sp/podinfo 
 kubectl apply -f - <<EOF
@@ -180,7 +196,7 @@ kibana-logging-5db895d95c-hr8ds   2/2     Running   0          2m9s
 As Kibana does not provide a authentication, I chose not to keep it public. To access Kibana (https://kibana-log.YOURDOMAIN.COM), run the bellow command (can be found under resourses/tmp/istio-virtual-services/log/kibana-log-vs.yaml)
 
 ```
-DOMAIN="evertonarakaki.tk"
+DOMAIN="arakaki.in"
 kubectl apply -f - <<EOF
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -240,7 +256,7 @@ There are 4 Dashboards already configured + alertmanager sending slackwebhooks i
 To visualize the grafana, use be bellow code, replacing the DOMAIN value with your domain. 
 
 ```
-DOMAIN="evertonarakaki.tk"
+DOMAIN="arakaki.in"
 kubectl apply -f - <<EOF
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -266,9 +282,46 @@ kubectl get secret --namespace mon grafana -o jsonpath="{.data.admin-password}" 
 
 It is a best practice to create readonly users to bussiness guys and first level support. 
 
+### Run CID provisioner script
+
+To provision logging resources, use the bellow script.
+```
+./30-build-cid-objects.sh
+```
+
+This part is a bit intense. The list bellow sumarizes the resources that are provisioned.
+
+ - Harbor (Container Registry)
+ - Jenkins (Job Tooling)
+ - Sonarqube (Mvn/gradle code analisys)
+ - Redis (for Harbor and Integration Testing)
+ - Postgres (for Harbor and Integration Testing)
+
+ The general idea is described bellow:
+
+![GKE Resources Architechture](./resourses/tmp/gke-architec.jpg)
+
+But in order to get the above running, some manual configurations (unfortunatelly) are needed.
+
+1. Setup Harbor apiuser for push/pull images
+2. Setup apiuser on Jenkins
+3. Setup Sonarqube to work on Jenkins
+
+#### Setup Harbor apiuser for push/pull images
+
+1. Login into Harbor on https://harbor.{DOMAIN}. 
+2. Basic
+2.1 User admin:admin is configured as default, first thing todo is to change the admin password. You can change it on the top right corner.
+2.2 Delete *library* project. This is a default and public. We do not need this.
+2.3 
+3. Now its time to create a new user for the registry, under Administration >   
+
+TO BE CONTINUED.
+
+
 ## Operators manual
 
-Shutdown cluster:
+Shutdown cluster (I think the bellow is wrong. If you scale down the default-pool, might be that the autoscaling pool is triggered due to pod requests. I need to investigate...)
 ```
 gcloud container clusters resize kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=default-pool
 gcloud container clusters resize kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=pool-horizontal-autoscaling
