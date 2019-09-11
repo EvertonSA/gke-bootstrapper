@@ -414,7 +414,7 @@ and run the following command:
 
 Sonarqube can run analisys over Python and Javascript also, but this tutorial is not going to go through it. 
 
-# Development guide for CI/CD Solution
+# Development/operation process for CI/CD Solution
 
 We now have everything we need. Jenkins is capable of deploying to multiple namespaces, Sonarqube is configured to run as you wish, Harbor is holding docker container images. You now have stablish a development process along your development team. This includes branch stategy, tags, deployments strategy, integration testing and so on. Things can go wild in this step. I will try to sumarize my ideas of a good effort/productivity process. You like it or not, the envirolment is ready for you to play around and allign the best strategy that fits for you. 
 
@@ -434,11 +434,11 @@ Now DevOps guys comes and:
 
 As you may think, this is not continous delivery. YES. Jenkins is painful for Continous Delivery. But not impossible. The devops need to work at least 50% of their available time in automation. This means testing routines and ite/prd deployment strategies. Git tags are also something that need enhancement for a full continous delivery pipeline. 
 
-The second strategy I would also think about is eliminating ite and prd envirolments and work with canary. This means that production traffic would be redirected to the newer version of the service and metrics of this would be evaluated by the SRE team. This is already enabled in this Cluster and I plan to make a full description of how this would work. 
+The second strategy I would also think about is eliminating ite envirolment and work with prd canary. 
+This means that production traffic would be redirected to the newer version of the service and metrics of this would be evaluated by the SRE team. 
+This is already enabled in this Cluster and I plan to make a full description of how this would work. 
 
-
-
-## Operators manual
+# Operators manual
 
 Shutdown cluster (I think the bellow is wrong. If you scale down the default-pool, might be that the autoscaling pool is triggered due to pod requests. I need to investigate...)
 ```
