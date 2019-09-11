@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "sciensa-sandbox",
+  "private_key_id": "73941c9fe585f65f1e03b6767fb145964b2e020d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCw1cSO0LB1/jjq\nh6mOz6ek+W8Ej72+zcGUXvp/l9vEa8WKXZqYnffcIZhBAVQG+31+KUqN04jxL5U4\n8lFbNcIh6ZQXyAVL8pcVG0dsEmqsndA+X+ksjroiBqAdhmmArpFPsCrECyYLqpUG\nGIU4xLBD7AU7X+sGT8KRV9GOehuDVaTVE9dN6nRhizf/jiLEEYdNeY2gefk8VCky\n23PwrLb6/A5ICvfrMdKjg2VFPa2PchaSUzzbtiVwKaPTWp0zAJUpqXEavOuLSwON\nKAylkXBHVgYy2aBJggMA+SA1yGE6LIgQE/SCQhkArVwoh3YB6CS3mInYaVG7RlNI\nFoDvk2DrAgMBAAECggEADLcqXZya+7kOjaq4ogjDhMTc20acvcIc19bmi1M3nc2k\nFDl72tqNDpqp0I7QZHokAXTlpAIgeDtULxaZjAX3EioyGG2tF9N3UrC194rxeb0V\nUs7hvO78amLwk37tSjADSegggx1MHI2lDp2nwre99vxbOfRBOaB1nK7kZirYnJ5m\netCVnwwlOoebya3cRAKl+tOzW/ksirNQ8DQM/XBuMjotdt5sCskStTfxAj0zhssK\n0Crykc4Od90kO5fu9k4xme17Uv1L+wWc77RAFGzX41p63HP59AnK7xox1Y4ZxgkC\n9c+DpehkWj2LGwWjqszZK716YNcP3zswkzbpTurhnQKBgQD3mzZXfYGwDeXxAGmZ\nb/ewPFlbE+Qjmhv3Lx7oc6FL421jilsfM/zoy7996xeGUlXMFf6tWc0n91p7iiAk\nLPmrAXRbqPnCZrzulqcgt5oFP5STZy31DbvDkMkHva+Lv63TAC8yraYN39K/C9Qg\nlfeVrXP0pKGQGcdSqNOKw2XsrwKBgQC21GKfbFubCAJDGM11bQpG5LTYCV1kNnny\nUbEEjJXhwN0ZjwB+qbpqAOhC0sNg5015p4DgMQPya9/NY8+PlP+PE7IYitpwpHtl\nls1rxUhDAqEWST+Y3w7MaegQ4J6BpliEnXZYvuezvdrW4bgMr4R00txMf//jZ3mi\nifC25RW2hQKBgQDYMuaYLjZ3Cyuj68BJAcM8VvWO2SdzDrUseDB8t7o3ETYKnFxE\nOpiyjHV/9S5tUqcntGzT4H2KUCjphgnajIrUDkkTX8/1Ns/xZAo6PxZ1Trbknks6\nletFL77Yy3/kflHA04Bit80ugCj8N8/ZRBkS0IlXLAkGUfwA6PkNSOBOcQKBgE6S\nhfPnuJKu5XH6hcnyW5lODt5NYAKCWvQl4YKH/J3xqdOjHl5RCRknXKnjNC5AGY6v\nyvYOepjDfYIiZABb01yk5UQg4HHKbnGhVpT7SuvphFs0jY1gR1bYKPCf597mI2KS\n3VqUaLVZYWQ5y0RAZhdiy2RhGhKb1K1ixL2FREiVAoGBALKEYzZZikVCs+VxITiY\nw2J+cMYZ846NMrM+UKT5sHFgSpNBN9s37wzaGzkMkMgGhPcmT0WjPijcmRLefpLL\nJ7M2OjMMP8Vi4Qq+Hk8SFehZlEwvff8UJt/IoJsBj13ohHiWJMNdyiUuyNpZ8mg9\nOj/pEjgYpDIV9qMnrUV+illJ\n-----END PRIVATE KEY-----\n",
+  "client_email": "apiadmin@sciensa-sandbox.iam.gserviceaccount.com",
+  "client_id": "106256929400969913922",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/apiadmin%40sciensa-sandbox.iam.gserviceaccount.com"
+}

@@ -315,9 +315,9 @@ But in order to get the above running, some manual configurations (unfortunatell
 
 1. Login into Harbor on https://harbor.{DOMAIN}. 
 2. Basic
-  2.1 User admin:admin is configured as default, first thing todo is to change the admin password. You can change it on the top right corner.
-  2.2 Delete *library* project. This is a default and public. We do not need this.
-  2.3 Let us also disable self registration. Under `Administration > Configuration > Authentication`, untick `Allow Self-Registration`.
+  2.1. User admin:admin is configured as default, first thing todo is to change the admin password. You can change it on the top right corner.
+  2.2. Delete *library* project. This is a default and public. We do not need this.
+  2.3. Let us also disable self registration. Under `Administration > Configuration > Authentication`, untick `Allow Self-Registration`.
 3. Now its time to create a new user for the registry, under `Administration >  Users > New Users`. Create an apiuser user. Note down the password for next steps. 
 
 #### Setup apiuser on Jenkins
@@ -350,10 +350,10 @@ For the automation to work properly, you will need to add the apiuser credential
 
 Go to `Credentials > Jenkins > Global Credentials > Add Credentials` and add the *apiuser* from the Harbor Registry. Simple user and password, no different configuration is needed. 
 
-Now Jenkins need to connect to a git repository. I have not detailed this because if you don't know how, google it. There are 100000x ways of doing that. As I hate Jenkins I would recommend *Poll SCM* because is the easiest one.
+Now Jenkins need to connect to a git repository. I have not detailed this because if you don't know how, google it. Google for adding ssh git key to Jenkins. 
 
+Note: the bellow configuration is only needed if you want to use jenkins to deploy to the cluster. I would not recommend using it! Why? Simply because Jenkins was not built for the Cloud. In my dream architechture Jenkins only does one thing: build docker images. 
 Next and last stuff, you will need to run the bellow code on Cloud Shell:
-
 ```
 kubectl create clusterrolebinding permissive-binding --clusterrole=cluster-admin --user=admin --user=kubelet --group=system:serviceaccounts
 ```
