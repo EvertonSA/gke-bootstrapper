@@ -299,7 +299,7 @@ This part is a bit intense. The list bellow sumarizes the resources that are pro
 
  The general idea is described bellow:
 
-![GKE Resources Architechture](./resourses/tmp/gke-architec.jpg)
+![GKE Resources Architechture](./resourses/tmp/cid-flux.png)
 
 But in order to get the above running, some manual configurations (unfortunatelly) are needed.
 
@@ -311,12 +311,95 @@ But in order to get the above running, some manual configurations (unfortunatell
 
 1. Login into Harbor on https://harbor.{DOMAIN}. 
 2. Basic
-2.1 User admin:admin is configured as default, first thing todo is to change the admin password. You can change it on the top right corner.
-2.2 Delete *library* project. This is a default and public. We do not need this.
-2.3 
-3. Now its time to create a new user for the registry, under Administration >   
+  2.1 User admin:admin is configured as default, first thing todo is to change the admin password. You can change it on the top right corner.
+  2.2 Delete *library* project. This is a default and public. We do not need this.
+  2.3 Let us also disable self registration. Under `Administration > Configuration > Authentication`, untick `Allow Self-Registration`.
+3. Now its time to create a new user for the registry, under `Administration >  Users > New Users`. Create an apiuser user. Note down the password for next steps. 
 
-TO BE CONTINUED.
+#### Setup apiuser on Jenkins
+
+By default, Jenkins is not externally opened. To access it, you can use the bellow snippet (change DOMAIN variable to your domain), and there is also a template under resourses/tmp/istio-virtual-services/cid/jenkins-vs.yaml)
+
+
+```
+DOMAIN="arakaki.in"
+kubectl apply -f - <<EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: jenkins
+  namespace: cid
+spec:
+  hosts:
+  - "jenkins-cid.${DOMAIN}"
+  gateways:
+  - public-gateway.istio-system.svc.cluster.local
+  http:
+  - route:
+    - destination:
+        host: jenkins
+EOF
+```
+
+You can use admin:admin to access Jenkins, but the first TODO is to change the admin password. 
+
+For the automation to work properly, you will need to add the apiuser credentials under Jenkins. 
+
+Go to `Credentials > Jenkins > Global Credentials > Add Credentials` and add the *apiuser* from the Harbor Registry. Simple user and password, no different configuration is needed. 
+
+Now Jenkins need to connect to a git repository. I have not detailed this because if you don't know how, google it. There are 100000x ways of doing that. As I hate Jenkins I would recommend *Poll SCM* because is the easiest one.
+
+#### Setup Sonarqube
+
+Although I'm not well experienced with Sonarqube, I gave it a try. To access externally, see bellow:
+
+```
+DOMAIN="arakaki.in"
+kubectl apply -f - <<EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: sonarqube
+  namespace: cid
+spec:
+  hosts:
+  - "sonarqube-cid.${DOMAIN}"
+  gateways:
+  - public-gateway.istio-system.svc.cluster.local
+  http:
+  - route:
+    - destination:
+        host: sq-sonarqube
+EOF
+```
+
+login into https://sonarqube-cid.${DOMAIN} and login as admin:admin. Generate a user apiuser and copy the token value.
+
+Following the tutorial, you will have the following output for a Maven project.
+
+```
+mvn sonar:sonar \
+  -Dsonar.host.url=https://sonarqube-cid.arakaki.in \
+  -Dsonar.login=33e30ea684e5636af4d7ec8b12c8ed67bba1fde3
+```
+
+The following output for a Gradle project: 
+  
+```
+You just need to declare the org.sonarqube plugin in your build.gradle file:
+
+plugins {
+  id "org.sonarqube" version "2.5"
+}
+
+and run the following command:
+
+./gradlew sonarqube \
+  -Dsonar.host.url=https://sonarqube-cid.arakaki.in \
+  -Dsonar.login=33e30ea684e5636af4d7ec8b12c8ed67bba1fde3
+```
+
+Sonarqube can run analisys over Python and Javascript also, but this tutorial is not going to go through it. 
 
 
 ## Operators manual
