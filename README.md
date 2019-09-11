@@ -284,6 +284,10 @@ It is a best practice to create readonly users to bussiness guys and first level
 
 ### Run CID provisioner script
 
+```
+Note from a GCP Engineer: the bellow code is garbage. You are on the cloud. Use the cloud. Google Cloud Repository + Google Container Registry + Cloud Build + Cloud Trigger is the best way to go for a CID stack on the cloud. I have worked on the bellow but it recommended to apply Cloud Best Practices in a cloud envirolment. 
+```
+
 To provision logging resources, use the bellow script.
 ```
 ./30-build-cid-objects.sh
@@ -320,7 +324,6 @@ But in order to get the above running, some manual configurations (unfortunatell
 
 By default, Jenkins is not externally opened. To access it, you can use the bellow snippet (change DOMAIN variable to your domain), and there is also a template under resourses/tmp/istio-virtual-services/cid/jenkins-vs.yaml)
 
-
 ```
 DOMAIN="arakaki.in"
 kubectl apply -f - <<EOF
@@ -348,6 +351,16 @@ For the automation to work properly, you will need to add the apiuser credential
 Go to `Credentials > Jenkins > Global Credentials > Add Credentials` and add the *apiuser* from the Harbor Registry. Simple user and password, no different configuration is needed. 
 
 Now Jenkins need to connect to a git repository. I have not detailed this because if you don't know how, google it. There are 100000x ways of doing that. As I hate Jenkins I would recommend *Poll SCM* because is the easiest one.
+
+Next and last stuff, you will need to run the bellow code on Cloud Shell:
+
+```
+kubectl create clusterrolebinding permissive-binding --clusterrole=cluster-admin --user=admin --user=kubelet --group=system:serviceaccounts
+```
+
+I will lose all Kubernetes jobs oportunity because of the above snippet. 
+But if you want jenkins to deploy to all namespaces, you will need the above code. 
+I could granulary select the roles for specific namespaces but since Jenkins is not the best CID tool I will not even bother testing.
 
 #### Setup Sonarqube
 
@@ -401,6 +414,29 @@ and run the following command:
 
 Sonarqube can run analisys over Python and Javascript also, but this tutorial is not going to go through it. 
 
+# Development guide for CI/CD Solution
+
+We now have everything we need. Jenkins is capable of deploying to multiple namespaces, Sonarqube is configured to run as you wish, Harbor is holding docker container images. You now have stablish a development process along your development team. This includes branch stategy, tags, deployments strategy, integration testing and so on. Things can go wild in this step. I will try to sumarize my ideas of a good effort/productivity process. You like it or not, the envirolment is ready for you to play around and allign the best strategy that fits for you. 
+
+My major dev2prod process idea is:
+
+1. developer develops local, testing if application runs locally. Resources neede (db, queues, cache) always comes from the dev namespace.
+2. developer think code is good, create a pull request to the dev branch.
+3. after aproval, the CID system builds the dockerfile and push it to the dev namespace, to be replaced with the existing service running on the dev namespace.
+4. developers confirms with the operations team that the container is stable and ready to be deployed to ite and prd envirolments.
+
+Now DevOps guys comes and:
+
+1. on specific timeslots, they merge dev and ite branches, applying container to ite envirolment
+2. apply automated bussiness logic tests and watch the observability stack to ensure everything works as expected. If not, they debug and fix the issue. 
+3. confirms with PO and devs in a techtalk after daily the results from the observability. Devs and operators need to work together to find root cause + fix. Iterate as many times as necessary. 
+4. with ite container ready, release to production in a non critical timeslot.
+
+As you may think, this is not continous delivery. YES. Jenkins is painful for Continous Delivery. But not impossible. The devops need to work at least 50% of their available time in automation. This means testing routines and ite/prd deployment strategies. Git tags are also something that need enhancement for a full continous delivery pipeline. 
+
+The second strategy I would also think about is eliminating ite and prd envirolments and work with canary. This means that production traffic would be redirected to the newer version of the service and metrics of this would be evaluated by the SRE team. This is already enabled in this Cluster and I plan to make a full description of how this would work. 
+
+
 
 ## Operators manual
 
@@ -430,44 +466,3 @@ Force Deployment/Statefulset update without deleting
 ```
 kmon patch deployments prometheus-deployment -p  "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"dummy-date\":\"`date +'%s'`\"}}}}}"
 ```
-
-# Below is not ok, still TBD
-
-###### Configure Jenkins to deploy to Kubernetes
-
-When creating a new pipeline, use `Setup Kubernetes CLI (kubectl)` plugin to deploy to the kubernetes cluster. You will need to configure a credential. See bellow how to configure the credential.
-
-####### Create a ServiceAccount named `jenkins-dev-robot` in a given namespace.
-```
-kubectl -n dev create serviceaccount jenkins-dev-robot
-kubectl -n ite create serviceaccount jenkins-ite-robot
-kubectl -n prd create serviceaccount jenkins-prd-robot
-```
-####### The next line gives `jenkins-robot` administator permissions for this namespace.
-```
-kubectl -n dev create rolebinding jenkins-dev-robot-binding --clusterrole=cluster-admin --serviceaccount=jenkins-dev-robot
-kubectl -n ite create rolebinding jenkins-ite-robot-binding --clusterrole=cluster-admin --serviceaccount=jenkins-ite-robot
-kubectl -n prd create rolebinding jenkins-prd-robot-binding --clusterrole=cluster-admin --serviceaccount=jenkins-prd-robot
-```
-####### Get the name of the token that was automatically generated for the ServiceAccount `jenkins-robot`.
-```
-kubectl -n dev get serviceaccount jenkins-dev-robot -o go-template --template='{{range .secrets}}{{.name}}{{"\n"}}{{end}}'
-kubectl -n ite get serviceaccount jenkins-ite-robot -o go-template --template='{{range .secrets}}{{.name}}{{"\n"}}{{end}}'
-kubectl -n prd get serviceaccount jenkins-prd-robot -o go-template --template='{{range .secrets}}{{.name}}{{"\n"}}{{end}}'
-```
-####### Retrieve the token and decode it using base64.
-```
-kubectl -n <NAMESPACE> get secrets <SECRETNAME> -o go-template --template '{{index .data "token"}}' | base64 -D
-```
-
-On Jenkins, navigate in the folder you want to add the token in, or go on the main page. Then click on the "Credentials" item in the left menu and find or create the "Domain" you want. Finally, paste your token into a Secret text credential. The ID is the credentialsId you need to use in the plugin configuration.
-
-
-### Building Block Continous Integration / Continous Delivery
-
-```
-```
-
-
-
-helm install --name my-release stable/grafana
