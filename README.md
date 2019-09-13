@@ -282,6 +282,8 @@ kubectl get secret --namespace mon grafana -o jsonpath="{.data.admin-password}" 
 
 It is a best practice to create readonly users to bussiness guys and first level support. 
 
+//TODO: 
+
 ### Run CID provisioner script
 
 ```
@@ -319,6 +321,15 @@ But in order to get the above running, some manual configurations (unfortunatell
   2.2. Delete *library* project. This is a default and public. We do not need this.
   2.3. Let us also disable self registration. Under `Administration > Configuration > Authentication`, untick `Allow Self-Registration`.
 3. Now its time to create a new user for the registry, under `Administration >  Users > New Users`. Create an apiuser user. Note down the password for next steps. 
+
+posNote: for Kubernetes to be able to pull from this, use (change domain and password):
+
+```
+DOMAIN="arakaki.in"
+kubectl create secret docker-registry regcred --docker-server=https://harbor.${DOMAIN} --docker-username=apiuser --docker-password=YOURSECRETPASSWORD123 --docker-email=whatever@we.com
+```
+
+now you can use `regcred` as your 
 
 #### Setup apiuser on Jenkins
 
@@ -416,27 +427,35 @@ Sonarqube can run analisys over Python and Javascript also, but this tutorial is
 
 # Development/operation process for CI/CD Solution
 
-We now have everything we need. Jenkins is capable of deploying to multiple namespaces, Sonarqube is configured to run as you wish, Harbor is holding docker container images. You now have stablish a development process along your development team. This includes branch stategy, tags, deployments strategy, integration testing and so on. Things can go wild in this step. I will try to sumarize my ideas of a good effort/productivity process. You like it or not, the envirolment is ready for you to play around and allign the best strategy that fits for you. 
+We now have everything we need. 
+Jenkins is capable of deploying to multiple namespaces.
+Sonarqube is configured to run as you wish.
+Harbor is holding docker container images.
+You now have stablish a development process along your development team.
+This includes branch stategy, tags, deployments strategy, integration testing and so on.
+Things can go wild in this step. I will try to sumarize my ideas of a good effort/productivity process.
+You like it or not, the envirolment is ready for you to play around and allign the best strategy that fits for you. 
 
 My major dev2prod process idea is:
 
-1. developer develops local, testing if application runs locally. Resources neede (db, queues, cache) always comes from the dev namespace.
+1. developer develops local, testing if application runs locally. Resources needed (db, queues, cache) always comes from the dev namespace.
 2. developer think code is good, create a pull request to the dev branch.
-3. after aproval, the CID system builds the dockerfile and push it to the dev namespace, to be replaced with the existing service running on the dev namespace.
-4. developers confirms with the operations team that the container is stable and ready to be deployed to ite and prd envirolments.
+3. after aproval, the CID system builds the dockerfile and push it to container registry
+4. with Helm, updates the running release on dev namespace to the new image. 
+5. developers confirms with the operations team that the container is stable and ready to be deployed to ite and prd envirolments.
 
-Now DevOps guys comes and:
+Now DevOps guys comes and decide what is the best production deployment strategy. The GKE cluster is ready for canary deployments and I would definetely recommend going with this approach. I have not yet decided if the canary is going to be done via helm, but for a starting point, it is good to be mature, then proceed to a full helm canary deployment. 
+Here I recommend having a look at the `template-manifest/dev-template-manifests/backend-spring-bootstrapper` for a canary yaml approach.
+Also have a look at https://bitbucket.org/evertonsa/springboot-example-app where we have a helm canary ready application in springboot. 
 
-1. on specific timeslots, they merge dev and ite branches, applying container to ite envirolment
-2. apply automated bussiness logic tests and watch the observability stack to ensure everything works as expected. If not, they debug and fix the issue. 
-3. confirms with PO and devs in a techtalk after daily the results from the observability. Devs and operators need to work together to find root cause + fix. Iterate as many times as necessary. 
-4. with ite container ready, release to production in a non critical timeslot.
+The idea is that the devops prepare the env to work with that jenkins file. On day 0, a devops will perform the following operations:
+1. clone git repo to CloudShell
+2. Modify values to a dev stage (set the image tag to the appropriate dev container)
+3. Perform following command `helm install --name dev-release springboot-example-app-chart/ --namespace dev`
+4. Modify values to a prd stage (set image tag to the appropriate prd container)
+5. Perform following command `helm install --name prd-release springboot-example-app-chart/ --set=canary.enabled=true --namespace prd`
 
-As you may think, this is not continous delivery. YES. Jenkins is painful for Continous Delivery. But not impossible. The devops need to work at least 50% of their available time in automation. This means testing routines and ite/prd deployment strategies. Git tags are also something that need enhancement for a full continous delivery pipeline. 
-
-The second strategy I would also think about is eliminating ite envirolment and work with prd canary. 
-This means that production traffic would be redirected to the newer version of the service and metrics of this would be evaluated by the SRE team. 
-This is already enabled in this Cluster and I plan to make a full description of how this would work. 
+Now everything is ready to work with the Jenkinsfile in the repo. 
 
 # Operators manual
 
