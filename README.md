@@ -321,15 +321,22 @@ But in order to get the above running, some manual configurations (unfortunatell
   2.2. Delete *library* project. This is a default and public. We do not need this.
   2.3. Let us also disable self registration. Under `Administration > Configuration > Authentication`, untick `Allow Self-Registration`.
 3. Now its time to create a new user for the registry, under `Administration >  Users > New Users`. Create an apiuser user. Note down the password for next steps. 
+4. for Kubernetes namespaces to be able to pull from harbor you will need to distribute this secret to other namespaces. The bellow code uses kubed to perform such task.
 
-posNote: for Kubernetes to be able to pull from this, use (change domain and password):
+Use (change domain and password):
 
 ```
 DOMAIN="arakaki.in"
-kubectl create secret docker-registry regcred --docker-server=https://harbor.${DOMAIN} --docker-username=apiuser --docker-password=YOURSECRETPASSWORD123 --docker-email=whatever@we.com
+USER="apiuser"
+PASSWORD="FROMPREVIUSSTEP"
+kubectl create secret docker-registry regcred --docker-server=https://harbor.${DOMAIN} --docker-username=${USER} --docker-password=${PASSWORD} --docker-email=whatever@we.com
+kubectl label namespace dev app=kubed
+kubectl label namespace ite app=kubed
+kubectl label namespace prd app=kubed
+kubectl annotate secret regcred kubed.appscode.com/sync="app=kubed"
 ```
 
-now you can use `regcred` as your 
+Now you can use `regcred` as your imagePullSecrets.
 
 #### Setup apiuser on Jenkins
 
@@ -363,7 +370,7 @@ Go to `Credentials > Jenkins > Global Credentials > Add Credentials` and add the
 
 Now Jenkins need to connect to a git repository. I have not detailed this because if you don't know how, google it. Google for adding ssh git key to Jenkins. 
 
-Note: the bellow configuration is only needed if you want to use jenkins to deploy to the cluster. I would not recommend using it! Why? Simply because Jenkins was not built for the Cloud. In my dream architechture Jenkins only does one thing: build docker images. 
+Note: the bellow configuration is only needed if you want to use jenkins to deploy to the cluster.
 Next and last stuff, you will need to run the bellow code on Cloud Shell:
 ```
 kubectl create clusterrolebinding permissive-binding --clusterrole=cluster-admin --user=admin --user=kubelet --group=system:serviceaccounts
@@ -372,6 +379,8 @@ kubectl create clusterrolebinding permissive-binding --clusterrole=cluster-admin
 I will lose all Kubernetes jobs oportunity because of the above snippet. 
 But if you want jenkins to deploy to all namespaces, you will need the above code. 
 I could granulary select the roles for specific namespaces but since Jenkins is not the best CID tool I will not even bother testing.
+
+ALSO INSTALL JENKINS webhook-step plugin
 
 #### Setup Sonarqube
 
@@ -444,18 +453,23 @@ My major dev2prod process idea is:
 4. with Helm, updates the running release on dev namespace to the new image. 
 5. developers confirms with the operations team that the container is stable and ready to be deployed to ite and prd envirolments.
 
-Now DevOps guys comes and decide what is the best production deployment strategy. The GKE cluster is ready for canary deployments and I would definetely recommend going with this approach. I have not yet decided if the canary is going to be done via helm, but for a starting point, it is good to be mature, then proceed to a full helm canary deployment. 
-Here I recommend having a look at the `template-manifest/dev-template-manifests/backend-spring-bootstrapper` for a canary yaml approach.
-Also have a look at https://bitbucket.org/evertonsa/springboot-example-app where we have a helm canary ready application in springboot. 
+Now merge from dev to master takes place. I developed an ideal scenario bellow, where canary is applied. This will need you to have a look into:
 
-The idea is that the devops prepare the env to work with that jenkins file. On day 0, a devops will perform the following operations:
-1. clone git repo to CloudShell
-2. Modify values to a dev stage (set the image tag to the appropriate dev container)
-3. Perform following command `helm install --name dev-release springboot-example-app-chart/ --namespace dev`
-4. Modify values to a prd stage (set image tag to the appropriate prd container)
-5. Perform following command `helm install --name prd-release springboot-example-app-chart/ --set=canary.enabled=true --namespace prd`
+https://bitbucket.org/evertonsa/springboot-example-app
 
-Now everything is ready to work with the Jenkinsfile in the repo. 
+See how the Jenkinsfile and the chart directory is structured.
+
+In order the canary to work, you will need the following:
+
+This snippet will deploy the springboot app with no canary on dev namespace, but with external access!
+```
+helm install --name app-dev-release ./springboot-example-app-chart --set=canary.enabled=false --set=virtualService.enabled=true --set=virtualService.host=backend-spring-dev.arakaki.in --namespace dev
+```
+
+This snippet will deploy the springboot app with canary and external access
+```
+helm install --name app-prd-release springboot-example-app-chart/ --set=canary.enabled=true --set=canary.virtualService.enabled=true --set=canary.virtualService.host=backend-spring.arakaki.in --namespace prd
+```
 
 # Operators manual
 
