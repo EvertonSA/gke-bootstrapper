@@ -448,25 +448,30 @@ You like it or not, the envirolment is ready for you to play around and allign t
 My major dev2prod process idea is:
 
 1. developer develops local, testing if application runs locally. Resources needed (db, queues, cache) always comes from the dev namespace.
-2. developer think code is good, create a pull request to the dev branch.
+2. developer align if code is good, create a pull request to the dev branch.
 3. after aproval, the CID system builds the dockerfile and push it to container registry
 4. with Helm, updates the running release on dev namespace to the new image. 
 5. developers confirms with the operations team that the container is stable and ready to be deployed to ite and prd envirolments.
 
-Now merge from dev to master takes place. I developed an ideal scenario bellow, where canary is applied. This will need you to have a look into:
+Now merge from dev to master takes place. And again, automation would take control of deploying to prd envirolment.
+
+Bellow I describe how I would setup a complete dev/prd cid canary strategy:
+
+This will need you to have a look into:
 
 https://bitbucket.org/evertonsa/springboot-example-app
 
 See how the Jenkinsfile and the chart directory is structured.
 
-In order the canary to work, you will need the following:
+On day 0, in order for the canary to work properly, you will need the following:
 
-This snippet will deploy the springboot app with no canary on dev namespace, but with external access!
+This snippet will deploy the springboot app with **no canary** on dev namespace, but with external access!
+
 ```
 helm install --name app-dev-release ./springboot-example-app-chart --set=canary.enabled=false --set=virtualService.enabled=true --set=virtualService.host=backend-spring-dev.arakaki.in --namespace dev
 ```
 
-This snippet will deploy the springboot app with canary and external access
+This snippet will deploy the springboot app with canary and external access!
 ```
 helm install --name app-prd-release springboot-example-app-chart/ --set=canary.enabled=true --set=canary.virtualService.enabled=true --set=canary.virtualService.host=backend-spring.arakaki.in --namespace prd
 ```
@@ -475,14 +480,14 @@ helm install --name app-prd-release springboot-example-app-chart/ --set=canary.e
 
 Shutdown cluster (I think the bellow is wrong. If you scale down the default-pool, might be that the autoscaling pool is triggered due to pod requests. I need to investigate...)
 ```
-gcloud container clusters resize kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=default-pool
-gcloud container clusters resize kub-cluster-001 --num-nodes=0 --region=us-central1 --node-pool=pool-horizontal-autoscaling
+gcloud container clusters resize kub-cluster-001 --num-nodes=0 --zone=us-central1-a --node-pool=default-pool
+gcloud container clusters resize kub-cluster-001 --num-nodes=0 --zone=us-central1-a --node-pool=pool-horizontal-autoscaling
 ```
 
 Turn on cluster:
 ```
-gcloud container clusters resize kub-cluster-001 --num-nodes=1 --region=us-central1 --node-pool=default-pool
-gcloud container clusters resize kub-cluster-001 --num-nodes=1 --region=us-central1 --node-pool=pool-horizontal-autoscaling
+gcloud container clusters resize kub-cluster-001 --num-nodes=1 --zone=us-central1-a --node-pool=default-pool
+gcloud container clusters resize kub-cluster-001 --num-nodes=1 --zone=us-central1-a --node-pool=pool-horizontal-autoscaling
 ```
 
 Interesting alias:
