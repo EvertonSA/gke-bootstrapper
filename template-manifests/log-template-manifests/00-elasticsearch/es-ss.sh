@@ -48,7 +48,7 @@ spec:
             claimName: elasticsearch-claim
       containers:
       - name: elasticsearch
-        image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.4
+        image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.2.1
         ports:
         - containerPort: 9200
           name: http
