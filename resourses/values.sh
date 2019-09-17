@@ -8,7 +8,7 @@
 ###################################################################
 
 #### Modify bellow according to your project
-PROJECT_ID="sciensa-sandbox"
+PROJECT_ID="plucky-bulwark-253121"
 CLUSTER_NAME="kub-cluster-001"
 REGION="us-central1"
 OWNER_EMAIL="eveuca@gmail.com"

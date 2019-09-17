@@ -14,8 +14,8 @@ gcloud config set project $PROJECT_ID
 echo "--- install flagger ---"
 . gke-addons/install-flagger-gke.sh
 
-kubectl apply -f ../template-manifests/prd-template-manifests/flagger-loadtest/
-kubectl apply -f ../template-manifests/dev-template-manifests/flagger-loadtest/
+#kubectl apply -f ../template-manifests/prd-template-manifests/flagger-loadtest/
+#kubectl apply -f ../template-manifests/dev-template-manifests/flagger-loadtest/
 
 echo "--- install cid objects ---"
 . ../template-manifests/cid-template-manifests/99-psql/install-psql.sh ../template-manifests/cid-template-manifests/99-psql/pg-cid-values.yaml
