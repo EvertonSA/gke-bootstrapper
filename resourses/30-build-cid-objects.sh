@@ -23,3 +23,6 @@ echo "--- install cid objects ---"
 . ../template-manifests/cid-template-manifests/20-jenkins/install-jenkins.sh
 . ../template-manifests/cid-template-manifests/30-sonarqube/install_sonarqube.sh
 . ../template-manifests/cid-template-manifests/00-harbor/install-harbor-container-registry.sh
+
+echo "sleeping for 5 minutes. I know, but let the Harbor spinup before you continue!! Jenkins and Sonarqube are also 2 pods that takes some time to spinup..."
+sleep 5m

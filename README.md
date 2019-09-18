@@ -316,19 +316,23 @@ But in order to get the above running, some manual configurations (unfortunatell
 #### Setup Harbor apiuser for push/pull images
 
 1. Login into Harbor on https://harbor.{DOMAIN}. 
-2. Basic
-  2.1. User admin:admin is configured as default, first thing todo is to change the admin password. You can change it on the top right corner.
-  2.2. Delete *library* project. This is a default and public. We do not need this.
-  2.3. Let us also disable self registration. Under `Administration > Configuration > Authentication`, untick `Allow Self-Registration`.
+2. User admin:admin is configured as default, first thing todo is to change the admin password. You can change it on the top right corner.
+2. Delete *library* project. This is a default and public. We do not need this.
+2. Let us also disable self registration. Under `Administration > Configuration > Authentication`, untick `Allow Self-Registration`.
 3. Now its time to create a new user for the registry, under `Administration >  Users > New Users`. Create an apiuser user. Note down the password for next steps. 
 4. for Kubernetes namespaces to be able to pull from harbor you will need to distribute this secret to other namespaces. The bellow code uses kubed to perform such task.
 
-Use (change domain and password):
+First declare the variables bellow:
 
 ```
 DOMAIN="arakaki.in"
 USER="apiuser"
 PASSWORD="FROMPREVIUSSTEP"
+```
+
+Run the bellow code to spread a docker pull regcred secret:
+
+```
 kubectl create secret docker-registry regcred --docker-server=https://harbor.${DOMAIN} --docker-username=${USER} --docker-password=${PASSWORD} --docker-email=whatever@we.com
 kubectl label namespace dev app=kubed
 kubectl label namespace ite app=kubed
@@ -362,25 +366,30 @@ spec:
 EOF
 ```
 
-You can use admin:admin to access Jenkins, but the first TODO is to change the admin password. 
+Default admin user is `admin` and the password can be gathered with:
+```
+printf $(kubectl get secret --namespace cid jenkins -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode);echo
+```
 
 For the automation to work properly, you will need to add the apiuser credentials under Jenkins. 
 
 Go to `Credentials > Jenkins > Global Credentials > Add Credentials` and add the *apiuser* from the Harbor Registry. Simple user and password, no different configuration is needed. 
 
-Now Jenkins need to connect to a git repository. I have not detailed this because if you don't know how, google it. Google for adding ssh git key to Jenkins. 
+![GKE Resources Architechture](./resourses/tmp/harbor-credential-config.png)
 
-Note: the bellow configuration is only needed if you want to use jenkins to deploy to the cluster.
+Now Jenkins need to connect to a git repository. Google for adding ssh git key to Jenkins. 
+
+![GKE Resources Architechture](./resourses/tmp/jenkins-privkey-bucket.png)
+
 Next and last stuff, you will need to run the bellow code on Cloud Shell:
+
 ```
 kubectl create clusterrolebinding permissive-binding --clusterrole=cluster-admin --user=admin --user=kubelet --group=system:serviceaccounts
 ```
 
-I will lose all Kubernetes jobs oportunity because of the above snippet. 
-But if you want jenkins to deploy to all namespaces, you will need the above code. 
-I could granulary select the roles for specific namespaces but since Jenkins is not the best CID tool I will not even bother testing.
+Now we configure a Jenkins Envirolment Variable: 
 
-ALSO INSTALL JENKINS webhook-step plugin
+![GKE Resources Architechture](./resourses/tmp/harbor-global-env.png)
 
 #### Setup Sonarqube
 
@@ -415,23 +424,6 @@ mvn sonar:sonar \
   -Dsonar.host.url=https://sonarqube-cid.arakaki.in \
   -Dsonar.login=33e30ea684e5636af4d7ec8b12c8ed67bba1fde3
 ```
-
-The following output for a Gradle project: 
-  
-```
-You just need to declare the org.sonarqube plugin in your build.gradle file:
-
-plugins {
-  id "org.sonarqube" version "2.5"
-}
-
-and run the following command:
-
-./gradlew sonarqube \
-  -Dsonar.host.url=https://sonarqube-cid.arakaki.in \
-  -Dsonar.login=33e30ea684e5636af4d7ec8b12c8ed67bba1fde3
-```
-
 Sonarqube can run analisys over Python and Javascript also, but this tutorial is not going to go through it. 
 
 # Development/operation process for CI/CD Solution
@@ -443,7 +435,7 @@ Harbor is holding docker container images.
 You now have stablish a development process along your development team.
 This includes branch stategy, tags, deployments strategy, integration testing and so on.
 Things can go wild in this step. I will try to sumarize my ideas of a good effort/productivity process.
-You like it or not, the envirolment is ready for you to play around and allign the best strategy that fits for you. 
+The envirolment is ready for you to play around and allign the best strategy that fits for you. 
 
 My major dev2prod process idea is:
 
@@ -455,15 +447,23 @@ My major dev2prod process idea is:
 
 Now merge from dev to master takes place. And again, automation would take control of deploying to prd envirolment.
 
-Bellow I describe how I would setup a complete dev/prd cid canary strategy:
+Bellow I describe with an example how I would setup a complete dev/prd cid canary strategy:
+
+First, the jenkins config:
+
+`Create New Job > Multibranch Pipeline > `
+
+![GKE Resources Architechture](./resourses/tmp/new-project.png)
+
+![GKE Resources Architechture](./resourses/tmp/branch-config.png)
 
 This will need you to have a look into:
 
 https://bitbucket.org/evertonsa/springboot-example-app
 
-See how the Jenkinsfile and the chart directory is structured.
+See how the Jenkinsfile, branches and the chart directory is structured.
 
-On day 0, in order for the canary to work properly, you will need the following:
+On day 0, in order for the canary to work properly, you will need the following (on the springboot-example-app repo):
 
 This snippet will deploy the springboot app with **no canary** on dev namespace, but with external access!
 
