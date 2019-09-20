@@ -36,11 +36,11 @@ cd gke-bootstrapper
 To provision the cluster and other necessary resources, use the bellow script.
 
 ```
-cd resources
+cd resourses
 ./00-build-kubernetes-gcp.sh
 ```
 
-This will create the underlaying cloud infrastructure for the GKE cluster, deploy a GKE prodcution ready cluster and install three major components:
+This will create the underlaying cloud infrastructure for the GKE cluster, deploy a GKE production ready cluster and install three major components:
 
  - helm (package manager)
  - istio (service mesh)
