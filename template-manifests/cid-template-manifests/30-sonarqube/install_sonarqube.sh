@@ -1,7 +1,7 @@
 export POSTGRES_PASSWORD=$(kubectl get secret --namespace cid database-psql-cid-postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
 
 helm install --name sq --namespace cid \
-  --set image.tag=7.9.1-community \
+  --set image.tag=6.7-community \
   --set service.type=ClusterIP \
   --set database.type=postgresql \
   --set postgresql.enabled=false \
