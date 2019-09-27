@@ -19,6 +19,7 @@ DOMAIN="arakaki.in"
 #### not needed to modify, but you can, at your own risk :) ####
 SA_EMAIL="apiadmin@${PROJECT_ID}.iam.gserviceaccount.com"
 CLUSTER_VERSION="1.13.7-gke.24"
+ISTIO_VERSION="1.3.0"
 VPC="vpc-001"
 KUB_SBN="subnet-kub"
 VM_SBN="subnet-vm"
