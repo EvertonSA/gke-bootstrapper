@@ -21,9 +21,8 @@ echo "--- Create service account ---"
 . cloud-infrastructure/01-gcloud-apiadmin-sa.sh
 
 echo "--- Create GKE cluster ---"
-. cloud-infrastructure/10-gcloud-gke.sh
+. cloud-infrastructure/10-gcloud-gke.shell
 
-# ...only after istio is created...
 echo "--- create dns service account"
 . cloud-infrastructure/30-gcloud-dns-sa.sh
 
@@ -38,27 +37,9 @@ echo "--- install helm on gke ---"
 echo "--- create dns entry, only after istio is ready ---"
 . cloud-infrastructure/20-gcloud-clouddns.sh
 
-echo "--- kubectl apply standard namespaces ---"
-kubectl apply -f ../template-manifests/00-namespaces
-
-echo "--- enabling istio sidecar injection ---"
-kubectl label namespace default istio-injection=enabled
-kubectl apply -f ../template-manifests/cid-template-manifests/istio-sidecar
-kubectl apply -f ../template-manifests/log-template-manifests/istio-sidecar
-kubectl apply -f ../template-manifests/mon-template-manifests/istio-sidecar
-kubectl apply -f ../template-manifests/dev-template-manifests/istio-sidecar
-kubectl apply -f ../template-manifests/ite-template-manifests/istio-sidecar
-kubectl apply -f ../template-manifests/prd-template-manifests/istio-sidecar
-
-echo "--- create storage classes and persistent volumes ---"
+echo "--- create storage classes ---"
 . gke-addons/fast-regional-storageclass.sh
 . gke-addons/standard-regional-storageclass.sh
-
-echo "--- install cert-manager for TLS with letsencrypt ---"
-. gke-addons/install-cert-manager-gke.sh
-
-echo "--- install letsencrypt prod issuer ---"
-. cert-manager-manifests/00-letsencrypt-prod-issuer.sh
 
 echo "--- Last, but not least, install istio gateway ---"
 . istio-gke-templates/install-public-gateway.sh

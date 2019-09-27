@@ -9,9 +9,7 @@
 # import variables in script context
 source values.sh
 
-# começar dos discos
-
-# echo "deleting pool-horizontal-autoscaling"
+echo "deleting pool-horizontal-autoscaling"
 gcloud container node-pools delete "pool-horizontal-autoscaling" \
     --cluster=$CLUSTER_NAME \
     --region=$REGION
@@ -31,4 +29,3 @@ gcloud compute networks subnets delete $e_SBN_VM
 
 echo "delete vpc"
 gcloud compute networks delete $e_VPC
-
