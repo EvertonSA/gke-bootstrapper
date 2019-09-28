@@ -13,6 +13,9 @@ kubectl create namespace istio-system
 helm template ./gke-addons/istio-init \
   --name istio-init --namespace istio-system | kubectl apply -f -
 
+echo "wait 1 minute for Kubernetes Master to load the Istio CRD"
+sleep 60s
+
 # Istio objects
 helm template ./gke-addons/istio \
   --name istio --namespace istio-system | kubectl apply -f -
