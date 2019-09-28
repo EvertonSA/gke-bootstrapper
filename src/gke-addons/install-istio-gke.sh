@@ -10,9 +10,9 @@
 kubectl create namespace istio-system
 
 # istio init CRD
-helm template ./istio-init \
+helm template ./gke-addons/istio-init \
   --name istio-init --namespace istio-system | kubectl apply -f -
 
 # Istio objects
-helm template ./istio \
+helm template ./gke-addons/istio \
   --name istio --namespace istio-system | kubectl apply -f -
