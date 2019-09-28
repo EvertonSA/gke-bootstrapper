@@ -1,5 +1,7 @@
 # GKE k8s bootstrapper
 
+# Deprecation note: This documentation is deprecated. It will be updated as soon as I possible can.
+
 ## Overwall architechture
 
 ![GKE Cloud Infra Architechture](./resourses/tmp/gke-bootstrapper-infra.jpg)

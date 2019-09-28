@@ -62,6 +62,3 @@ done
 
 echo "delete apiadmin service account"
 gcloud iam service-accounts delete $SA_EMAIL  --quiet 
-
-echo "delete dns service account"
-gcloud iam service-accounts delete $SA_DNS --quiet 

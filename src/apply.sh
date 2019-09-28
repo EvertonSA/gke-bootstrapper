@@ -18,9 +18,6 @@ echo "--- Enabling API ---"
 echo "--- Create service account ---"
 . cloud-infrastructure/01-gcloud-apiadmin-sa.sh
 
-echo "--- create dns service account"
-. cloud-infrastructure/30-gcloud-dns-sa.sh
-
 echo "--- Provision network stuff ---"
 . cloud-infrastructure/00-gcloud-network.sh
 
