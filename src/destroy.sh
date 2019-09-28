@@ -32,17 +32,24 @@ gcloud container clusters delete $CLUSTER_NAME \
 echo "delete apiadmin service account"
 gcloud iam service-accounts delete $SA_EMAIL  --quiet 
 
+echo "delete dns service account"
+gcloud iam service-accounts delete $SA_DNS --quiet 
+
 echo "delete kub subnet"
 gcloud compute networks subnets delete $e_SBN  --quiet 
 
 echo "delete vm subnet"
 gcloud compute networks subnets delete $e_SBN_VM --quiet
 
+echo "deleting remaning istio firewall rules"
+for fwrule in $(gcloud compute firewall-rules list --filter "name:k8s*" --format="value("name")"); do
+  gcloud compute firewall-rules delete $fwrule --quiet
+done
+
 echo "delete vpc"
 gcloud compute networks delete $e_VPC --quiet 
 
-echo "delete disks"
-
+echo "delete disks created by pvc objects"
 for disk in $(gcloud compute disks list --filter="name:gke-$CLUSTER_NAME*" --format="value("name")"); do
   disk_location_scope=$(gcloud compute disks list --filter="name:$disk" --format="value("LOCATION_SCOPE")")
   disk_location=$(gcloud compute disks list --filter="name:$disk" --format="value("LOCATION")")
@@ -52,3 +59,9 @@ for disk in $(gcloud compute disks list --filter="name:gke-$CLUSTER_NAME*" --for
     gcloud compute disks delete $disk --zone $disk_location --quiet
   fi 
 done
+
+echo "delete apiadmin service account"
+gcloud iam service-accounts delete $SA_EMAIL  --quiet 
+
+echo "delete dns service account"
+gcloud iam service-accounts delete $SA_DNS --quiet 

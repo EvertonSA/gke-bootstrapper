@@ -54,7 +54,6 @@ node-pools create "pool-horizontal-autoscaling" \
     --disk-type "pd-standard" \
     --disk-size "100" \
     --metadata disable-legacy-endpoints=true \
-    --enable-stackdriver-kubernetes \
     --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
     --preemptible \
     --enable-autoscaling \
@@ -63,6 +62,3 @@ node-pools create "pool-horizontal-autoscaling" \
     --max-nodes "2" \
     --enable-autoupgrade \
     --enable-autorepair
-
-echo "sleep 10 minutes for istio objects... yes. 10 minutes. its better to wait 10 minutes then destroy your cluster because you rushed..."
-sleep 10m

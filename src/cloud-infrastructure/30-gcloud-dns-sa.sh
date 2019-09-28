@@ -13,11 +13,11 @@ gcloud iam service-accounts create dns-admin \
 --project=${PROJECT_ID}
 
 gcloud iam service-accounts keys create ./gcp-dns-admin.json \
---iam-account=dns-admin@${PROJECT_ID}.iam.gserviceaccount.com \
+--iam-account=${SA_DNS} \
 --project=${PROJECT_ID}
 
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
---member=serviceAccount:dns-admin@${PROJECT_ID}.iam.gserviceaccount.com \
+--member=serviceAccount:${SA_DNS} \
 --role=roles/dns.admin
 
 # bind service account created previously to kub secret

@@ -6,9 +6,13 @@
 #Email         	: eveuca@gmail.com
 ###################################################################
 
-# download istio
-curl -L https://git.io/getLatestIstio | ISTIO_VERSION=${ISTIO_VERSION} sh -
-
-# 
-export PATH=$PWD/bin:$PATH
+# Istio namespace
 kubectl create namespace istio-system
+
+# istio init CRD
+helm template ./istio-init \
+  --name istio-init --namespace istio-system | kubectl apply -f -
+
+# Istio objects
+helm template ./istio \
+  --name istio --namespace istio-system | kubectl apply -f -
