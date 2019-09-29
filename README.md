@@ -89,13 +89,14 @@ Under CloudDNS, go to the created zone and copy the nameservers created for your
 
 Edit your domain provider to use the nameservers gathered previusly.
 
-From now on, your cluster is ready to be used. It is a raw cluster,no observability
-by default (besides the one from GCP Stackdriver).It is recommend to use Stackdriver,
+From now on, your cluster is ready to be used. It is a raw cluster, no observability
+by default (besides the one from GCP Stackdriver). It is recommend to use Stackdriver, 
 but use the repo TOFILL to have observability over the kubernetes objects into your cluster
 
 # Operators manual
 
 **Note: shutdown cluster info is wrong! You need to delete the autoscaller pool and resize the default-pool to 0**
+
 Shutdown cluster 
 ```
 gcloud container clusters resize kub-cluster-001 --num-nodes=0 --zone=us-central1-a --node-pool=default-pool
