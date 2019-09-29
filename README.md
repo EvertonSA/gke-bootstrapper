@@ -1,9 +1,7 @@
-================================================================================
-                               GKE Bootstrapper
-================================================================================
+# GKE Bootstrapper
 
 Introduction
-=============
+---
 
 From developer to operations in big companies, there is always a need to have a 
 consistent development envirolment. This development needs to be cheap and also
