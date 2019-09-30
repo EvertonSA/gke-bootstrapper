@@ -77,6 +77,13 @@ promsd-76f8d4cff8-nfghj                    2/2     Running     1          18m
 
 TODO: Terraform the sh*t out of this script.
 
+## Destroy resources
+
+```
+cd src
+./destroy.sh
+```
+
 #### POSTBUILD: 
 
 ##### Confige DNS
