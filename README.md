@@ -4,11 +4,11 @@ Introduction
 ---
 
 From developer to operations in big companies, there is always a need to have a 
-consistent development envirolment. This development needs to be cheap and also
+consistent development environment. This development needs to be cheap and also
 fast enough to go along with the desire to innovate and take your IT challanges
 even further. This repo is intended to bootstrap a GKE cluster on GCP free tier
-accont but not limited to development envirolments. Due to HA capabilities plus
-autoscaller, it is duable to bring this stack to production envirolments on GCP.
+accont but not limited to development environments. Due to HA capabilities plus
+autoscaller, it is duable to bring this stack to production environments on GCP.
 
 ---
 ## Overwall architechture

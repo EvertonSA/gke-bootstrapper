@@ -63,3 +63,6 @@ done
 
 echo "delete apiadmin service account"
 gcloud iam service-accounts delete $SA_EMAIL  --quiet 
+
+echo "delete gcp apiadminadmin json file"
+rm -f apiadmin.json
