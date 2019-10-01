@@ -35,6 +35,9 @@ gke-addons/install-helm-gke.sh
 echo "--- Install Istio 1.3.0 ---"
 gke-addons/install-istio-gke.sh
 
+echo "--- Install Stackdriver Istio Monitoring ---"
+kubectl apply -f gke-addons/istio-stackdriver-metrics.yaml
+
 echo "--- create HA storage classes ---"
 . gke-addons/00-fast-regional-storageclass.sh
 . gke-addons/01-standard-regional-storageclass.sh
