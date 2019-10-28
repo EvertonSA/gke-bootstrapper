@@ -20,27 +20,27 @@ gcloud beta container \
 clusters create $CLUSTER_NAME \
     --zone=$REGION-$ZONE_POSFIX_1 \
     --node-locations=$REGION-$ZONE_POSFIX_1,$REGION-$ZONE_POSFIX_2 \
-    --no-enable-basic-auth \
-    --cluster-version $CLUSTER_VERSION \
-    --machine-type "n1-standard-2" \
-    --image-type "COS"  \
-    --disk-type "pd-standard" \
-    --disk-size "30" \
-    --metadata disable-legacy-endpoints=true \
-    --service-account $SA_EMAIL \
-    --num-nodes "2" \
-    --enable-ip-alias \
     --network $e_VPC \
     --subnetwork $e_SBN \
+    --no-enable-basic-auth \
+    --metadata disable-legacy-endpoints=true \
+    --cluster-version $CLUSTER_VERSION \
+    --machine-type "n1-standard-2" \
+    --num-nodes "2" \
+    --disk-type "pd-standard" \
+    --disk-size "30" \
+    --image-type "COS"  \
+    --service-account $SA_EMAIL \
+    --default-max-pods-per-node "110" \
+    --maintenance-window "03:00" \
     --enable-stackdriver-kubernetes \
     --enable-intra-node-visibility \
-    --default-max-pods-per-node "110" \
-    --addons HorizontalPodAutoscaling,HttpLoadBalancing \
     --enable-autoupgrade \
     --enable-autorepair \
-    --maintenance-window "03:00"
-
-
+    --enable-ip-alias \
+    --addons HorizontalPodAutoscaling,HttpLoadBalancing,Istio \
+    --istio-config=auth=MTLS_PERMISSIVE 
+    
 # add extra preemtible node pool for horizontal autoscaling
 gcloud beta container \
     --project $PROJECT_ID \

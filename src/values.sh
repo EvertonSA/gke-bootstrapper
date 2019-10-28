@@ -8,7 +8,7 @@
 ###################################################################
 
 #### Modify bellow according to your project
-PROJECT_ID="plucky-bulwark-253121"
+PROJECT_ID="sre-birds"
 CLUSTER_NAME="kub-cluster-001"
 REGION="us-central1"
 ZONE_POSFIX_1="a"
@@ -18,7 +18,7 @@ DOMAIN="arakaki.in"
 
 #### not needed to modify, but you can, at your own risk :) ####
 SA_EMAIL="apiadmin@${PROJECT_ID}.iam.gserviceaccount.com"
-CLUSTER_VERSION="1.13.7-gke.24"
+CLUSTER_VERSION="1.14.6-gke.13"
 ISTIO_VERSION="1.3.0"
 VPC="vpc-001"
 KUB_SBN="subnet-kub"

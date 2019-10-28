@@ -30,11 +30,7 @@ gcloud container clusters delete $CLUSTER_NAME \
     --zone=$REGION-$ZONE_POSFIX_1  --quiet 
 
 echo "delete apiadmin service account"
-gcloud projects remove-iam-policy-binding  ${PROJECT_ID} \
-  --member="serviceAccount:$SA_EMAIL" \
-  --role=roles/editor
 gcloud iam service-accounts delete $SA_EMAIL  --quiet 
-
 
 echo "delete kub subnet"
 gcloud compute networks subnets delete $e_SBN  --quiet 
