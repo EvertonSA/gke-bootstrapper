@@ -13,13 +13,13 @@ source values.sh
 gcloud config set project $PROJECT_ID
 
 echo "--- Enabling API ---"
-#. cloud-infrastructure/00-enable-gcloud-api.sh
+. cloud-infrastructure/00-enable-gcloud-api.sh
 
 echo "--- Create service account ---"
-#. cloud-infrastructure/01-gcloud-apiadmin-sa.sh
+. cloud-infrastructure/01-gcloud-apiadmin-sa.sh
 
 echo "--- Provision network stuff ---"
-#. cloud-infrastructure/00-gcloud-network.sh
+. cloud-infrastructure/00-gcloud-network.sh
 
 echo "--- Create GKE cluster ---"
 . cloud-infrastructure/10-gcloud-gke.sh
@@ -33,10 +33,10 @@ echo "--- install helm on gke ---"
 gke-addons/install-helm-gke.sh
 
 echo "--- Install Istio 1.3.0 ---"
-#gke-addons/install-istio-gke.sh
+gke-addons/install-istio-gke.sh
 
 echo "--- Install Stackdriver Istio Monitoring ---"
-#kubectl apply -f gke-addons/istio-stackdriver-metrics.yaml
+kubectl apply -f gke-addons/istio-stackdriver-metrics.yaml
 
 echo "--- create HA storage classes ---"
 . gke-addons/00-fast-regional-storageclass.sh

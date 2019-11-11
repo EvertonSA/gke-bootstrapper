@@ -38,8 +38,9 @@ clusters create $CLUSTER_NAME \
     --enable-autoupgrade \
     --enable-autorepair \
     --enable-ip-alias \
-    --addons HorizontalPodAutoscaling,HttpLoadBalancing,Istio \
-    --istio-config=auth=MTLS_PERMISSIVE 
+    --addons HorizontalPodAutoscaling,HttpLoadBalancing
+#    --addons HorizontalPodAutoscaling,HttpLoadBalancing,Istio \
+#    --istio-config=auth=MTLS_PERMISSIVE 
     
 # add extra preemtible node pool for horizontal autoscaling
 gcloud beta container \
